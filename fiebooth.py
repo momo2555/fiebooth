@@ -20,7 +20,7 @@ import pygooey																		#textbox library
 import pygame																		#display library
 import cups																			#serial printer communication library
 from threading import Thread
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 #from wifi import Cell, Scheme
 import gphoto2 as gp																#camera library
 from time import sleep
@@ -61,7 +61,7 @@ loop_wifiConnection = False
 loop_eventName = False																#for continuous execution in INIT APP
 loop_printerSetUp = False															#for continuous execution in PRINTER SET UP APP
 loop_gallery_setup = False															#for continuous execution in GALLERY SETUP APP
-loop_gallery = False																#for continuous execution in GALLERY APP
+loop_gallery = False	    														#for continuous execution in GALLERY APP
 
 in_process = False																	#exclusive variable for tasks
 camera_available = False															#variable for camera init
