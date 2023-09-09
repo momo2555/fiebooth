@@ -28,7 +28,7 @@ class CameraStreamView(StateView):
 
     def __config_lum_down(self):
         pass
-
+ 
     def show(self):
         self.__camera.start()
         pass
