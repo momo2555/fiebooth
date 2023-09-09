@@ -5,13 +5,13 @@ from utils.camera_utils import CameraUtils
 import pygame
 
 class CameraStreamView(StateView):
-    def __init__(self, state_controller, window_context, buttons_controller, camera):
-        StateView.__init__(self, state_controller, window_context,buttons_controller, "camera_stream", "countdown")
+    def __init__(self, state_controller, window_context, camera):
+        StateView.__init__(self, state_controller, window_context, "camera_stream", "countdown")
         self.__camera : CameraController = camera
-        self.__buttons_controller : ButtonsController= buttons_controller
-        self.__init_buttons_event()
+        self.__buttons_controller : ButtonsController = ButtonsController()
+        
 
-    def __init_buttons_event(self):
+    def __init_buttons_events(self):
         self.__buttons_controller.add_button(pygame.K_a, self.__trigger_shot_callback)
 
     def __trigger_shot_callback(self):
@@ -30,16 +30,14 @@ class CameraStreamView(StateView):
         pass
  
     def show(self):
-        self.__camera.start()
-        pass
+        self.__init_buttons_events()
 
     def setup(self):
         CameraUtils.show_camera_stream_as_background(self.__camera, self._window)
+        self.__buttons_controller.setup()
 
     def destroy(self):
-        print("destroy camera from camera stream")
-        self.__camera.stop()
-        print("end of destroy")
+        self.__buttons_controller.clear_triggers()
 
 
 

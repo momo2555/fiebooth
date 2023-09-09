@@ -1,7 +1,7 @@
 from views.stateView import StateView
 from errors.errors import EmptyStateException, StateUnreachableException, DuplicateStateIdException
 from views.stateView import StateView
-
+from typing import List
 
 class StateMachineController :
     def __init__(self):
@@ -22,7 +22,7 @@ class StateMachineController :
             current_state_id = self.__currentState.get_state_id()
             target_state_id = self.__currentState.get_next_state_id()
 
-            next_states = []
+            next_states : List[StateView]= []
             for state in self.__states:
                 state : StateView
                 if state.get_state_id() == target_state_id:
@@ -34,8 +34,10 @@ class StateMachineController :
                 raise StateUnreachableException
             else:
                 self.__currentState.destroy()
+                next_states[0].set_artifacts(self.__currentState.get_artifacts())
                 self.__currentState = next_states[0]
                 self.__currentState.show()
+                self.__currentState.clear_artifacts()
         
         else:
             raise EmptyStateException

@@ -10,15 +10,16 @@ from datetime import datetime
 
 def __init_logger():
     logger = logging.getLogger('fiebooth')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('[%(asctime)s] [%(name)s] - %(levelname)s || %(message)s')
+    formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(levelname)s] : %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
 
 if __name__ == "__main__":
+    __init_logger()
     mainWindow = MainWindow()
 
 

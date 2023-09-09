@@ -6,18 +6,14 @@ import time
 import pygame
 
 class CountDownView(StateView):
-    def __init__(self, state_controller, window_context, buttons_controller, camera):
-        StateView.__init__(self, state_controller, window_context, buttons_controller, "countdown", "ask_print")
+    def __init__(self, state_controller, window_context, camera):
+        StateView.__init__(self, state_controller, window_context, "countdown", "ask_print")
         self.__timer = 0
         self.__camera :CameraController = camera
         self.__font = get_asset_uri("BradBunR.ttf")
 
     def show(self):
-        print("show countdown")
         self.__timer = time.time()
-        print("timer countdoan set")
-        self.__camera.start()
-        print("camera started")
 
     def setup(self):
         self.__show_camera_stream()
@@ -34,16 +30,18 @@ class CountDownView(StateView):
         
 
     def destroy(self):
-        self.__camera.stop()
+        pass
 
     def __show_camera_stream(self):
         CameraUtils.show_camera_stream_as_background(self.__camera, self._window)
 
     def __show_count(self, number):
-        font_obj = pygame.font.Font(self.__font, 100)
+        font_obj = pygame.font.Font(self.__font, 300)
         text_obj = font_obj.render(number, True, (229, 40, 34))
-        self._window.blit(text_obj, (150, 150))
+        self._window.blit(text_obj, (400, 400))
     
     def __save_picture(self):
-        print(CameraUtils.save_picture(self.__camera))
+        photo_name = CameraUtils.save_picture(self.__camera)
+        self._logger.info(f"Save photo : {photo_name}")
+        self._add_artifact("photo", photo_name)
         pass

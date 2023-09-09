@@ -6,8 +6,8 @@ import pygame
 
 
 class HomeView(StateView):
-    def __init__(self, state_controller, window_context, buttons_controller):
-        StateView.__init__(self, state_controller, window_context, buttons_controller, "home", "camera_stream")
+    def __init__(self, state_controller, window_context):
+        StateView.__init__(self, state_controller, window_context, "home", "camera_stream")
         self.__timer = 0
 
     def show(self):

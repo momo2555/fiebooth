@@ -1,16 +1,18 @@
 import threading
 import time
 import pygame
+import logging
+from typing import Dict, Any, List
 
 class ButtonsController():
     def __init__(self):
-        self.buttons = []
-        print("init of buttons controller")
+        self.__buttons : List[Dict[str, Any]] = []
+        self.logger = logging.getLogger("fiebooth")
+        
         
 
     def add_button(self, trigger, callback):
-        print("add new button")
-        self.buttons.append(
+        self.__buttons.append(
             {
                 "trigger" : trigger,
                 "callback" : callback
@@ -21,9 +23,11 @@ class ButtonsController():
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.KEYDOWN:
-                print(f"button pressed --- {event.key}")
-                for button in self.buttons:
+                self.logger.info(f"Button pressed {event.key}")
+                for button in self.__buttons:
                     if button["trigger"] == event.key:
                         button["callback"]()
 
 
+    def clear_triggers(self):
+        self.__buttons = []
