@@ -1,20 +1,30 @@
 from controllers.buttonsController import ButtonsController
+from controllers.cameraController import CameraController
+
 from views.mainWindow import MainWindow
 import pygame
+import os
+import logging
 
-def test():
-    print("AAAAAAAAAAAAAAAAAAAAAA")
+from datetime import datetime
+
+def __init_logger():
+    logger = logging.getLogger('fiebooth')
+    logger.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    formatter = logging.Formatter('[%(asctime)s] [%(name)s] - %(levelname)s || %(message)s')
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
 
 if __name__ == "__main__":
     mainWindow = MainWindow()
 
-    buttonsController = ButtonsController()
-    buttonsController.addButton(pygame.K_a, test)
-    
 
-    
 
     while True:
-        #buttonsController.setup()
         mainWindow.setup()
+        
+            
 

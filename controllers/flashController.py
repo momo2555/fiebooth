@@ -1,4 +1,4 @@
-
+import RPi.GPIO as gpio
 
 class FlashController:
     def __init__(self):

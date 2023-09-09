@@ -8,7 +8,7 @@ class ButtonsController():
         print("init of buttons controller")
         
 
-    def addButton(self, trigger, callback):
+    def add_button(self, trigger, callback):
         print("add new button")
         self.buttons.append(
             {
@@ -18,15 +18,12 @@ class ButtonsController():
         )
     
     def setup(self):
-        print("run button thread")
-        while True:
-            #if a GPIO is triggered
-            events = pygame.event.get()
-            for event in events:
-                if event.type == pygame.KEYDOWN:
-                    print("button pressed")
-                    for button in self.buttons:
-                        if button["trigger"] == event.key:
-                            button["callback"]()
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                print(f"button pressed --- {event.key}")
+                for button in self.buttons:
+                    if button["trigger"] == event.key:
+                        button["callback"]()
 
 

@@ -21,8 +21,8 @@ FILE_PRINTER = TEMP_PATH + "/" + "last_resized_picture.jpg"							#temp file for
 FILE_SETUP = TEMP_PATH + "/" + "setupCapture.jpg"									#temp file for printer setup
 FILE_SETUP_TEMP = TEMP_PATH + "/" + "tempSetupCapture.jpg"							#temp file for brightness and contrast setup
 
-WIDTH_DISPLAY = 1024																#screen size
-HEIGHT_DISPLAY = 600																#screen size
+WIDTH_DISPLAY = 1920																#screen size
+HEIGHT_DISPLAY = 1080																#screen size
 
 WIDTH_PRINTER = 1280																#image size for printer or 600
 HEIGHT_PRINTER = 853																#image size for printer or 309
@@ -45,3 +45,6 @@ YELLOW =  pygame.Color(255,255,0)
 
 
 APP_NAME = "Fiebooth V2"
+HOME_DELAY = 6
+
+USER_NAME = "guest"
