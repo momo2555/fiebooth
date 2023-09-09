@@ -45,6 +45,9 @@ class StateView:
 
     def get_next_state_id(self) -> str:
         return self._next_id
+    
+    def set_next_state_id(self, next_id) -> None:
+        self._next_id = next_id
 
     def _go_next_state(self) -> None:
         self._stateMachine.next_state()

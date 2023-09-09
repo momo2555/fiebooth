@@ -2,6 +2,8 @@ from .stateView import StateView
 from assets.assets import get_asset_uri
 from controllers.cameraController import CameraController
 from utils.camera_utils import CameraUtils
+from utils.win_utils import CenterMode
+from components.text_message import TextMessage
 import time
 import pygame
 
@@ -36,10 +38,11 @@ class CountDownView(StateView):
         CameraUtils.show_camera_stream_as_background(self.__camera, self._window)
 
     def __show_count(self, number):
-        font_obj = pygame.font.Font(self.__font, 300)
-        text_obj = font_obj.render(number, True, (229, 40, 34))
-        self._window.blit(text_obj, (400, 400))
-    
+        count = TextMessage(self._window, number,
+                                            center_x=CenterMode.CENTER, font_size=400,
+                                            center_y=CenterMode.CENTER, color=(67,134, 213))
+        count.setup()
+
     def __save_picture(self):
         photo_name = CameraUtils.save_picture(self.__camera)
         self._logger.info(f"Save photo : {photo_name}")

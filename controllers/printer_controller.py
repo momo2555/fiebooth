@@ -1,21 +1,41 @@
 
-import threading
+
 import time
 from config import config
+from utils.file_utils import FileUtils
+import cups
+import subprocess
+import pygame
+import os
+import time
+import logging
 
-class PrinterThread(threading.Thread):
+class PrinterController():
 	
 	def __init__(self):
-		threading.Thread.__init__(self)
-
-	def run(self):
+		self.logger = logging.getLogger("fiebooth")
+		pass
+	
+	def print(self, image_path):
+		#create temp directory
+		
+		tmp_dir = FileUtils.get_temp_dir()
+		self.logger.info(f"folder name {tmp_dir}")
+		tmp_img = os.path.join(tmp_dir, f"fb_{int(time.time())}.png")
+		resize_img = pygame.transform.scale(pygame.image.load(image_path),(config.WIDTH_PRINTER, config.HEIGHT_PRINTER))
+		pygame.image.save(resize_img, tmp_img)
+		self.logger.info(f"temp file {tmp_img} saved before printing")
+		# send print to printer
+		print_command = f"lp -d Brother_QL-800 {tmp_img}"
+		p = subprocess.Popen(print_command,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+	
+	def status(self):
 		init_time = time.clock()
 		current_time = init_time
 		#print("Initial time : ", init_time)
 		printer_status = "IDLE"
 		
 		#file1 = open("printerLogs.txt","a")
-
 		while current_time < (init_time + float(config.TIMEOUT)) and printer_status != "PRINTING COMPLET":
 			current_time = time.clock()
 			conn = cups.Connection()

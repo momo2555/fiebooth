@@ -38,3 +38,10 @@ https://gist.github.com/geerlingguy/de62619a906803808edddaf8bb9cdce8
 
 ## code photobooth var/html /... 
 https://trevilly.com/borne-photos-autonome-automatique-et-avec-galerie-web-integree-raspberry-pi/
+
+## install printer driver
+
+## get printer name
+```
+lpstat -p
+```

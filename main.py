@@ -1,7 +1,7 @@
 from controllers.buttonsController import ButtonsController
 from controllers.cameraController import CameraController
 
-from views.mainWindow import MainWindow
+from views.main_window import MainWindow
 import pygame
 import os
 import logging
@@ -25,7 +25,12 @@ if __name__ == "__main__":
 
 
     while True:
-        mainWindow.setup()
+        try:
+            mainWindow.setup()
+        except KeyboardInterrupt as e:
+            logging.getLogger("fiebooth").info(f"User Exit - Keyboard interrupt")
+            exit(0)
+        
         
             
 

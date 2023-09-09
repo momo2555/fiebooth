@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import date
 import time
 from pathlib import Path
+import tempfile
 
 
 class FileUtils:
@@ -46,3 +47,9 @@ class FileUtils:
         if not os.path.exists("~/.fiebooth/logs"):
             os.mkdir("~/.fiebooth/logs")
 
+    @staticmethod
+    def get_temp_dir() -> str:
+        temp_dir = os.path.join(tempfile.gettempdir(), "fiebooth")
+        if not os.path.exists(temp_dir):
+            os.makedirs(temp_dir, exist_ok=True)
+        return temp_dir
