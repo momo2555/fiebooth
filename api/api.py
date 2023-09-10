@@ -12,8 +12,9 @@ from typing import Annotated, Union
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
+from fastapi.responses import Response, FileResponse
 
+from jose import JWTError, jwt
 
 from multiprocessing import Process
 
@@ -41,16 +42,33 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 class FieboothApi():
     def __init__(self): 
         self.IS_ADMIN = Annotated[bool, Depends(self.__is_user_admin)]
+        self.USER = Annotated[SimpleUser, Depends(self.__get_current_user)]
         self.__utils = ApiUtilities()
         self.__init__routes()
         
     
     def __init__routes(self):
         # return the image by the id (the image is resized)
-        @app.get("/image/<id>")
-        async def get_image_by_id(id: str, is_admin:self.IS_ADMIN):
-            if is_admin:
-                return "coucou"
+        @app.get("/image/<id>",
+                 responses = 
+                    {
+                     200: {
+                         "content": {"image/png": {}}
+                         },
+                    },
+                 response_class=Response
+                )
+        async def get_image_by_id(id: str, user: self.USER):
+            #verifier si l'image appartient à l'utilisateur
+            try:
+                fileName = self.__utils.get_image_path(id, user)
+                return Response(fileName)
+            except:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Impossible to resolve id"
+                )
+            
         
         # get images list name by user
         @app.get("/images/user/<user_name>")
@@ -110,7 +128,7 @@ class FieboothApi():
     
         # get the currrent user
         @app.get("/users/me")
-        async def read_users_me(current_user: Annotated[SimpleUser, Depends(self.__get_current_user)]):
+        async def read_users_me(current_user: self.USER):
             return current_user
         
         # identification
