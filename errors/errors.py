@@ -11,3 +11,9 @@ class EmptyStateException(Exception):
 
 class AssetsNotFoundException(Exception):
     pass
+
+class WrongIamgePath(Exception):
+    pass
+
+class WrongImageId(Exception):
+    pass

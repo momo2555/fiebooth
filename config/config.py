@@ -48,3 +48,4 @@ APP_NAME = "Fiebooth V2"
 HOME_DELAY = 6
 
 USER_NAME = "guest"
+USER_PASSWORD = "123"

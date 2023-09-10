@@ -5,7 +5,8 @@ from datetime import date
 import time
 from pathlib import Path
 import tempfile
-
+from glob import glob
+from typing import List
 
 class FileUtils:
     @staticmethod
@@ -41,6 +42,13 @@ class FileUtils:
         photo_name = photo_name.format(day_date.strftime("capture_%d%m%y_%H-%M-%S"), config.USER_NAME)
         return os.path.join(session_dir, photo_name)
     
+
+    @staticmethod
+    def get_all_photos_folder() -> List[str]:
+        photos_path = FileUtils.get_photos_folder()
+        search_path = os.path.join(photos_path, "*/")
+        folders = glob(search_path, recursive = False)
+        return folders
 
     @staticmethod
     def create_logs_folder():
