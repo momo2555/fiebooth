@@ -1,6 +1,7 @@
 from .stateView import StateView
 from controllers.buttonsController import ButtonsController
 from controllers.printer_controller import PrinterController
+from controllers.test_printer import TestPrinter
 from components.photo_preview import PhotoPreview
 from components.text_message import TextMessage
 from utils.win_utils import CenterMode
@@ -13,7 +14,8 @@ class AskPrintView(StateView):
         self.__buttons_controller : ButtonsController = ButtonsController()
         self.__preview : PhotoPreview = None 
         self.__print_text : TextMessage = None
-        self.__printer : PrinterController = PrinterController() 
+        #self.__printer : PrinterController = PrinterController() 
+        self.__printer : TestPrinter = TestPrinter()
     
     def __init_buttons(self):
         self.__buttons_controller.add_button(pygame.K_y, self.__yes_print)

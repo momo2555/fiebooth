@@ -2,10 +2,17 @@ from .file_utils import FileUtils
 from typing import List
 from errors.errors import WrongIamgePath, WrongImageId
 import os
+import time
+import pygame
+from config import config
 import re
+import logging
 
 class ImageUtils():
-    
+    @staticmethod
+    def logger():
+         return logging.getLogger("fiebooth")
+
     @staticmethod
     def get_all_user_folders(user_name) -> List[str]:
         folders = FileUtils.get_all_photos_folder()
@@ -52,4 +59,14 @@ class ImageUtils():
             return os.path.join(photos_folder, f"{folder_name}/{image_name}")
         else:
             raise WrongImageId()
+    
+    @staticmethod
+    def create_temp_resized_image(image_path: str) -> str:
+        #create temp directory
+        tmp_dir = FileUtils.get_temp_dir()
+        tmp_img = os.path.join(tmp_dir, f"fb_{int(time.time())}.png")
+        resize_img = pygame.transform.scale(pygame.image.load(image_path),(config.WIDTH_PRINTER, config.HEIGHT_PRINTER))
+        pygame.image.save(resize_img, tmp_img)
+        ImageUtils.logger().info(f"temp file {tmp_img} saved after rescaling image")
+        return tmp_img
         

@@ -62,7 +62,7 @@ class FieboothApi():
             #verifier si l'image appartient à l'utilisateur
             try:
                 fileName = self.__utils.get_image_path(id, user)
-                return Response(fileName)
+                return FileResponse(fileName)
             except:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
