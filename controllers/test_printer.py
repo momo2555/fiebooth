@@ -22,10 +22,10 @@ class TestPrinter():
         im = Image.open(tmp_img)
         create_label(self.__qlr, im, "62", red=False, threshold=10, cut=True, rotate=90, dither=True)
         self.__be.write(self.__qlr.data)
-        for i in range(7):
-            res = self.__be.read()
-            if res != b'':
-                print( interpret_response(res))
+        # for i in range(7):
+        #     res = self.__be.read()
+        #     if res != b'':
+        #         print( interpret_response(res))
         self.__be.dispose()
 
         
