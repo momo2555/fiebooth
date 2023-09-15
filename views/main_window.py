@@ -4,6 +4,8 @@ from views.camera_stream_view import CameraStreamView
 from views.countdown_view import CountDownView
 from views.ask_prrint_view import AskPrintView
 from views.printing_view import PrintingView
+from views.blank_smile_view import BlankSmileView
+from views.diaporama_view import DiaporamaView
 from controllers.stateMachineController import StateMachineController
 from controllers.buttonsController import ButtonsController
 from controllers.cameraController import CameraController
@@ -27,13 +29,16 @@ class MainWindow:
     def __init_state_machine(self):
         self.__logger.info(f"Init state machine")
         home_state = HomeView(self.__state_machine, self.__window)
-        camera_stream_state = CameraStreamView(self.__state_machine, self.__window, self.__camera)
+        #camera_stream_state = CameraStreamView(self.__state_machine, self.__window, self.__camera)
+        diaporama_state = DiaporamaView(self.__state_machine, self.__window, self.__camera)
         countdown_state = CountDownView(self.__state_machine, self.__window, self.__camera)
+        blank_smile = BlankSmileView(self.__state_machine, self.__window, self.__camera)
         ask_print_state = AskPrintView(self.__state_machine, self.__window)
         printing_view = PrintingView(self.__state_machine, self.__window)
         self.__state_machine.add_state(home_state)
-        self.__state_machine.add_state(camera_stream_state)
+        self.__state_machine.add_state(diaporama_state)
         self.__state_machine.add_state(countdown_state)
+        self.__state_machine.add_state(blank_smile)
         self.__state_machine.add_state(ask_print_state)
         self.__state_machine.add_state(printing_view)
 

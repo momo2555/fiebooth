@@ -9,13 +9,14 @@ import pygame
 
 class CountDownView(StateView):
     def __init__(self, state_controller, window_context, camera):
-        StateView.__init__(self, state_controller, window_context, "countdown", "ask_print")
+        StateView.__init__(self, state_controller, window_context, "countdown", "blank_smile")
         self.__timer = 0
         self.__camera :CameraController = camera
         self.__font = get_asset_uri("BradBunR.ttf")
 
     def show(self):
         self.__timer = time.time()
+        
 
     def setup(self):
         self.__show_camera_stream()
@@ -27,13 +28,8 @@ class CountDownView(StateView):
         elif diff_time > 2 and diff_time <= 3:
             self.__show_count("1")
         else:
-            self.__save_picture()
             self._go_next_state()
         
-
-    def destroy(self):
-        pass
-
     def __show_camera_stream(self):
         CameraUtils.show_camera_stream_as_background(self.__camera, self._window)
 
@@ -42,9 +38,3 @@ class CountDownView(StateView):
                                             center_x=CenterMode.CENTER, font_size=400,
                                             center_y=CenterMode.CENTER, color=(67,134, 213))
         count.setup()
-
-    def __save_picture(self):
-        photo_name = CameraUtils.save_picture(self.__camera)
-        self._logger.info(f"Save photo : {photo_name}")
-        self._add_artifact("photo", photo_name)
-        pass

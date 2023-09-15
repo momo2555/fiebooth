@@ -19,7 +19,7 @@ class ImageUtils():
         user_folders = []
         for f in folders:
             f_name = ImageUtils.get_folder_name_from_path(f)
-            f_user_name = f_name.split("_")[-1].replace("/") #security?
+            f_user_name = f_name.split("_")[-1].replace("/", "") #security?
             if user_name == f_user_name:
                 user_folders.append(f_name)
         return user_folders
@@ -69,4 +69,14 @@ class ImageUtils():
         pygame.image.save(resize_img, tmp_img)
         ImageUtils.logger().info(f"temp file {tmp_img} saved after rescaling image")
         return tmp_img
+
+    @staticmethod
+    def get_all_user_photos_path(user_name) -> List[str]:
+        folders : List[str] = list(map(ImageUtils.get_folder_path_from_name, 
+                           ImageUtils.get_all_user_folders(user_name)))
+        photos = []
+        for f in folders:
+            photos.extend(FileUtils.get_all_photos_in_folder(f))
+        return photos
+
         

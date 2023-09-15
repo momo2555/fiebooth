@@ -71,13 +71,21 @@ libcamera-still -t 5000 --viewfinder-width 2312 --viewfinder-height 1736 --width
 https://trevilly.com/borne-photos-autonome-automatique-et-avec-galerie-web-integree-raspberry-pi/
 
 ## install printer driver (not working for me)
-### Disable sleep time
-### Installation
-### Test
 ```
 cd drivers
 sudo apt install ./driver_name.deb
 ```
+
+### Disable sleep time
+See the link : 
+### Installation
+add lp and lpadmin to the user group (so that python can right on the printer)
+```
+sudo usermod -a -G lpadmin fiebooth
+sudo usermod -a -G lp fiebooth
+sudo reboot
+```
+### Test
 
 ## get printer name
 ```

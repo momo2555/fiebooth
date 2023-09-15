@@ -61,3 +61,9 @@ class FileUtils:
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir, exist_ok=True)
         return temp_dir
+
+    @staticmethod
+    def get_all_photos_in_folder(folder_path: str) -> List[str]:
+        search_path = os.path.join(folder_path, "*")
+        photos = glob(search_path, recursive = False)
+        return photos

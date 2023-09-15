@@ -1,5 +1,5 @@
 import brother_ql
-
+from tenacity import retry, stop_after_attempt
 from brother_ql import BrotherQLRaster, create_label
 from brother_ql.backends import backend_factory, guess_backend
 from brother_ql.devicedependent import models, label_type_specs, label_sizes
@@ -17,7 +17,14 @@ class TestPrinter():
         
         
     
+
     def print(self, image_path: str):
+        self.__print(image_path)
+        pass
+
+    @retry(stop=stop_after_attempt(7))
+    def __print(self, image_path: str):
+        
         tmp_img = ImageUtils.create_temp_resized_image(image_path)
         im = Image.open(tmp_img)
         create_label(self.__qlr, im, "62", red=False, threshold=10, cut=True, rotate=90, dither=True)
@@ -27,5 +34,6 @@ class TestPrinter():
         #     if res != b'':
         #         print( interpret_response(res))
         self.__be.dispose()
+        
 
         

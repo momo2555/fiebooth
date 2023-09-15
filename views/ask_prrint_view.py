@@ -14,8 +14,7 @@ class AskPrintView(StateView):
         self.__buttons_controller : ButtonsController = ButtonsController()
         self.__preview : PhotoPreview = None 
         self.__print_text : TextMessage = None
-        #self.__printer : PrinterController = PrinterController() 
-        self.__printer : TestPrinter = TestPrinter()
+        
     
     def __init_buttons(self):
         self.__buttons_controller.add_button(pygame.K_y, self.__yes_print)
@@ -24,11 +23,12 @@ class AskPrintView(StateView):
     def __yes_print(self):
         self._logger.info(f"YES Print photo ...")
         self.set_next_state_id("printing")
-        self.__printer.print(self.__photo_name)
+        self._add_artifact("photo_name", self.__photo_name)
         self._go_next_state()
 
     def __no_print(self):
         self._logger.info(f"NO don't print photo")
+        self.set_next_state_id("diaporama")
         self._go_next_state()
 
     def __show_preview(self):

@@ -1,15 +1,49 @@
-from views.stateView import StateView
-from assets.assets import get_asset_uri 
-from config import config
+from .stateView import StateView
+from assets.assets import get_asset_uri
+from controllers.cameraController import CameraController
+from utils.camera_utils import CameraUtils
+from utils.win_utils import CenterMode
+from controllers.test_printer import TestPrinter
+from components.text_message import TextMessage
 import time
 import pygame
 
-
 class PrintingView(StateView):
     def __init__(self, state_controller, window_context):
-        StateView.__init__(self, state_controller, window_context, "printing", "camera_stream")
-        
+        StateView.__init__(self, state_controller, window_context, "printing", "diaporama")
+        self.__printer : TestPrinter = None
+        self.__timer : int = 0
+        self.__photo_name : str = ""
+        self.__i = 0
+       
 
     def show(self):
+        self.__i = 0
+        self.__printer = TestPrinter()
+        self.__photo_name = self._get_artifact("photo_name")
+        self.__timer = time.time()
+        self.__printing_text = TextMessage(self._window, "Printing ... ",
+                                            center_x=CenterMode.CENTER, font_size=400,
+                                            center_y=CenterMode.CENTER, color=(201, 134, 213))
         
+        
+
+    def setup(self):
+        self._window.fill((255, 255, 255))
+        self.__printing_text.setup()
+        if self.__i == 2:
+            self.__print()
+        if time.time() - self.__timer > 1: 
+            self._go_next_state()
+        self.__i+=1
+        
+        
+
+    def destroy(self):
+        del self.__printer
         pass
+
+
+    def __print(self):
+        self.__printer.print(self.__photo_name)
+        
