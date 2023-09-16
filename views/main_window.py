@@ -7,7 +7,7 @@ from views.printing_view import PrintingView
 from views.blank_smile_view import BlankSmileView
 from views.diaporama_view import DiaporamaView
 from controllers.stateMachineController import StateMachineController
-from controllers.buttonsController import ButtonsController
+from controllers.buttons_controller import ButtonsController
 from controllers.cameraController import CameraController
 from config import config
 import logging

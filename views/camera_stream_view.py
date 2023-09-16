@@ -1,6 +1,6 @@
 from views.stateView import StateView
 from controllers.cameraController import CameraController
-from controllers.buttonsController import ButtonsController
+from controllers.buttons_controller import ButtonsController
 from utils.camera_utils import CameraUtils
 import pygame
 from components.simple_slider import SimpleSlider
@@ -13,9 +13,10 @@ class CameraStreamView(StateView):
         
 
     def __init_buttons_events(self):
-        self.__buttons_controller.add_button(pygame.K_a, self.__trigger_shot_callback)
-        self.__buttons_controller.add_button(pygame.K_UP, self.__config_contrast_up)
-        self.__buttons_controller.add_button(pygame.K_DOWN, self.__config_contrast_down)
+        # self.__buttons_controller.add_button(pygame.K_a, self.__trigger_shot_callback)
+        # self.__buttons_controller.add_button(pygame.K_UP, self.__config_contrast_up)
+        # self.__buttons_controller.add_button(pygame.K_DOWN, self.__config_contrast_down)
+        pass
 
     def __trigger_shot_callback(self):
         self._go_next_state()

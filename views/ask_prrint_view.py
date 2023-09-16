@@ -1,10 +1,11 @@
 from .stateView import StateView
-from controllers.buttonsController import ButtonsController
+from controllers.buttons_controller import ButtonsController
 from controllers.printer_controller import PrinterController
 from controllers.test_printer import TestPrinter
 from components.photo_preview import PhotoPreview
 from components.text_message import TextMessage
 from utils.win_utils import CenterMode
+from config import config
 import pygame
 
 class AskPrintView(StateView):
@@ -17,16 +18,17 @@ class AskPrintView(StateView):
         
     
     def __init_buttons(self):
-        self.__buttons_controller.add_button(pygame.K_y, self.__yes_print)
-        self.__buttons_controller.add_button(pygame.K_n, self.__no_print)
+        self.__buttons_controller = ButtonsController()
+        self.__buttons_controller.add_button(config.green_btn, self.__yes_print, key=pygame.K_y)
+        self.__buttons_controller.add_button(config.red_btn, self.__no_print, key=pygame.K_n)
 
-    def __yes_print(self):
+    def __yes_print(self, e):
         self._logger.info(f"YES Print photo ...")
         self.set_next_state_id("printing")
         self._add_artifact("photo_name", self.__photo_name)
         self._go_next_state()
 
-    def __no_print(self):
+    def __no_print(self, e):
         self._logger.info(f"NO don't print photo")
         self.set_next_state_id("diaporama")
         self._go_next_state()

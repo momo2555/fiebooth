@@ -9,3 +9,8 @@ home_delay: 6
 user_name: guest
 user_password: password
 api_enable: true
+use_keyboard: true
+green_btn: 26
+red_btn: 0
+yellow_btn: 0
+blue_btn: 0

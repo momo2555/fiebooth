@@ -10,11 +10,14 @@ class FlashController:
         gpio.setup(4, gpio.OUT)
 
     def flash_on(self):
-        print("on")
+        self.logger.info(f"Flash ON")
         gpio.output(4, gpio.HIGH)
         time.sleep(0.1)
 
-    def flash_off():
-        print("off")
+    def flash_off(self):
+        self.logger.info(f"Flash OFF")
         gpio.output(4, gpio.LOW)
-        time.sleep(1)
+    
+    def clean(self):
+        gpio.cleanup()
+        

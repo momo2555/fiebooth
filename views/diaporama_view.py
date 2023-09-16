@@ -1,7 +1,7 @@
 from .stateView import StateView
 from views.stateView import StateView
 from controllers.cameraController import CameraController
-from controllers.buttonsController import ButtonsController
+from controllers.buttons_controller import ButtonsController
 from utils.camera_utils import CameraUtils
 from utils.image_utils import ImageUtils
 import pygame
@@ -22,23 +22,24 @@ class DiaporamaView(StateView):
         self.__timer : float = None 
 
     def __init_buttons_events(self):
-        self.__buttons_controller.add_button(pygame.K_a, self.__trigger_shot_callback)
-        self.__buttons_controller.add_button(pygame.K_UP, self.__config_contrast_up)
-        self.__buttons_controller.add_button(pygame.K_DOWN, self.__config_contrast_down)
+        self.__buttons_controller = ButtonsController()
+        self.__buttons_controller.add_button(config.green_btn, self.__trigger_shot_callback, key=pygame.K_a)
+        self.__buttons_controller.add_button(1, self.__config_contrast_up, key=pygame.K_UP)
+        self.__buttons_controller.add_button(2, self.__config_contrast_down, key=pygame.K_DOWN)
 
-    def __trigger_shot_callback(self):
+    def __trigger_shot_callback(self, e):
         self._go_next_state()
 
-    def __config_contrast_up(self):
+    def __config_contrast_up(self, e):
         self.__contr_slider.set_value(self.__contr_slider.get_value() + 1)
         
-    def __config_contrast_down(self):
+    def __config_contrast_down(self, e):
         self.__contr_slider.set_value(self.__contr_slider.get_value() - 1)
 
-    def __config_lum_up(self):
+    def __config_lum_up(self, e):
         pass
 
-    def __config_lum_down(self):
+    def __config_lum_down(self, e):
         pass
  
     

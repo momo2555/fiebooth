@@ -1,4 +1,4 @@
-from controllers.buttonsController import ButtonsController
+from controllers.buttons_controller import ButtonsController
 from controllers.cameraController import CameraController
 from controllers.test_printer import TestPrinter
 
