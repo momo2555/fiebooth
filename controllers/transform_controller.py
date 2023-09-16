@@ -43,7 +43,8 @@ class TransformController():
         contrast = 1 + (self.__contr_value)/6
         brightness = 1 + (self.__bright_value)/6
         self.__tf = ImageUtils.image_transform_pyg(self.__tf_path, contrast=contrast, brightness=brightness,
-                                               scale=(WinUtils.wprct(0.5), WinUtils.hprct(0.5)))
+                                               scale=(WinUtils.wprct(0.5), WinUtils.hprct(0.5)),
+                                               user_text=config.user_text)
     
     def __draw_background(self):
         background = pygame.Surface(WinUtils.get_screen_size(), pygame.SRCALPHA)   # per-pixel alpha

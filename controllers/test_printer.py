@@ -30,7 +30,7 @@ class TestPrinter():
         brightness = 1 + (config.brightness+config.brightness_default)/6
         contrast = 1 + (config.contrast+config.contrast_default)/6
         scale = (config.width_printer, config.height_printer)
-        im = ImageUtils.image_transform(image_path, contrast, brightness, scale)
+        im = ImageUtils.image_transform(image_path, contrast, brightness, scale, config.user_text)
         #im = Image.open(tmp_img)
         create_label(self.__qlr, im, "62", red=False, threshold=10, cut=True, rotate=90, dither=True)
         self.__be.write(self.__qlr.data)
@@ -39,6 +39,7 @@ class TestPrinter():
         #     if res != b'':
         #         print( interpret_response(res))
         self.__be.dispose()
+    
         
 
         

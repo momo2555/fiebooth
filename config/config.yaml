@@ -8,6 +8,7 @@ height_printer: 853
 home_delay: 6
 user_name: guest
 user_password: password
+user_text: Mon super mariage !!
 api_enable: true
 use_keyboard: true
 green_btn: 26
@@ -16,5 +17,5 @@ yellow_btn: 0
 blue_btn: 0
 contrast: 0
 brightness: 0
-contrast_default: -3
-brightness_default: +2
+contrast_default: -2
+brightness_default: +1

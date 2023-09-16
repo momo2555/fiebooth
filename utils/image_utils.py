@@ -7,7 +7,8 @@ import pygame
 from config import config
 import re
 import logging
-from PIL import Image, ImageOps, ImageEnhance
+from PIL import Image, ImageOps, ImageEnhance, ImageDraw, ImageFont
+from assets.assets import get_asset_uri
 
 class ImageUtils():
     @staticmethod
@@ -81,12 +82,21 @@ class ImageUtils():
         return photos
 
     @staticmethod  
-    def image_transform(image_path, contrast : float = None, brightness : float = None, scale = None):
+    def image_transform(image_path, contrast : float = None, brightness : float = None, scale = None,
+                        user_text : str = None):
         im = Image.open(image_path)
         #rescale
         if scale is not None:
             im = im.resize(scale)
         im_gray = ImageOps.grayscale(im)
+        #user text
+        if user_text != "" and user_text is not None:
+            w, h = im_gray.size
+            shape = [(20, h-120), (w - 20, h - 20)]
+            font = ImageFont.truetype(get_asset_uri("BradBunR.ttf"), 80)
+            d1 = ImageDraw.Draw(im_gray)
+            d1.rectangle(shape, fill ="#ffff33", outline ="red")
+            d1.text((36, h-120), user_text, fill="#000000", font=font)
         #contrast
         if contrast is None : contrast = 1
         cont_enhancer = ImageEnhance.Contrast(im_gray)
@@ -98,8 +108,9 @@ class ImageUtils():
         return im_final
     
     @staticmethod
-    def image_transform_pyg(image_path, contrast : float = None, brightness : float = None, scale = None):
-        im = ImageUtils.image_transform(image_path, contrast, brightness, scale)
+    def image_transform_pyg(image_path, contrast : float = None, brightness : float = None, scale = None,
+                            user_text : str = None):
+        im = ImageUtils.image_transform(image_path, contrast, brightness, scale, user_text)
         #return a pygame image object
         im = im.convert('RGB')
         mode = im.mode
