@@ -3,7 +3,7 @@ import time
 import logging
 
 class FlashController:
-    
+
     def __init__(self):
         self.logger = logging.getLogger("fiebooth")
         gpio.setmode(gpio.BCM)
@@ -17,7 +17,7 @@ class FlashController:
     def flash_off(self):
         self.logger.info(f"Flash OFF")
         gpio.output(4, gpio.LOW)
-    
+
     def clean(self):
         gpio.cleanup()
         

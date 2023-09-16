@@ -20,8 +20,8 @@ class WinUtils:
         y_pos = int((screen_h - height)/2)
         return x_pos, y_pos
 
-    def screen_prct_width(prct: float) -> int:
+    def wprct(prct: float) -> int:
         return int(WinUtils.get_screen_size()[0] * prct)
     
-    def screen_prct_height(prct: float) -> int:
+    def hprct(prct: float) -> int:
         return int(WinUtils.get_screen_size()[1] * prct)

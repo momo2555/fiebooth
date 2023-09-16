@@ -4,8 +4,10 @@ from controllers.cameraController import CameraController
 from controllers.buttons_controller import ButtonsController
 from utils.camera_utils import CameraUtils
 from utils.image_utils import ImageUtils
+from utils.win_utils import WinUtils, CenterMode
 import pygame
 from components.simple_slider import SimpleSlider
+from components.text_message import TextMessage
 from config import config
 import random as rd
 import time
@@ -20,6 +22,7 @@ class DiaporamaView(StateView):
         self.__photos = []
         self.__current_photo : str = None
         self.__timer : float = None 
+        self.__diaporama_text : TextMessage = None
 
     def __init_buttons_events(self):
         self.__buttons_controller = ButtonsController()
@@ -55,16 +58,27 @@ class DiaporamaView(StateView):
         self.__init_buttons_events()
         self.__photos = ImageUtils.get_all_user_photos_path(config.user_name)
         self.__choose_photo()
+        self.__diaporama_text = TextMessage(self._window, "Diaporama", color=(192, 150, 20),
+                                            x = WinUtils.wprct(0.1),
+                                            y = WinUtils.hprct(0.1),
+                                            center_y=CenterMode.BOTTOM, font_size=WinUtils.hprct(0.06))
 
     def __draw_photo(self):
         self.__img = pygame.image.load(self.__current_photo).convert()
-        self._window.blit(self.__img, (0, 0))
+        (sw, sh) = (WinUtils.wprct(0.9),
+                  WinUtils.hprct(0.9))
+        pos = WinUtils.get_center_position(sw, sh)
+        
+        self.__img = pygame.transform.scale(self.__img, (sw, sh))
+        self._window.blit(self.__img, pos)
 
     def setup(self):
+        self._window.fill((192, 150, 20))
         if time.time() - self.__timer > 4:
             self.__choose_photo()
         self.__draw_photo()
         self.__buttons_controller.setup()
+        self.__diaporama_text.setup()
     
     def destroy(self) -> None:
         super().destroy()
