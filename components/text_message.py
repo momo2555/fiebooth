@@ -1,13 +1,13 @@
-from .component_base import CompenentBase
+from .component_base import ComponentBase
 from assets.assets import get_asset_uri
 from utils.win_utils import CenterMode, WinUtils
 import pygame
 
-class TextMessage(CompenentBase):
+class TextMessage(ComponentBase):
     def __init__(self, window_context, text, x = 0, y = 0, 
                  center_x = None, center_y = None, 
                  color = (0,0,0), font_size = 30):
-        CompenentBase.__init__(self, window_context)
+        ComponentBase.__init__(self, window_context)
         self.__text = text
         self.__font = pygame.font.Font(get_asset_uri("BradBunR.ttf"), font_size)
         self.__color = color

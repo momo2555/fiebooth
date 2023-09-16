@@ -7,6 +7,7 @@ from brother_ql.devicedependent import ENDLESS_LABEL, DIE_CUT_LABEL, ROUND_DIE_C
 from brother_ql.reader import OPCODES, chunker, merge_specific_instructions, interpret_response, match_opcode
 from PIL import Image
 from utils.image_utils import ImageUtils
+from config import config
 
 class TestPrinter():
     def __init__(self):
@@ -25,8 +26,12 @@ class TestPrinter():
     @retry(stop=stop_after_attempt(7))
     def __print(self, image_path: str):
         
-        tmp_img = ImageUtils.create_temp_resized_image(image_path)
-        im = Image.open(tmp_img)
+        #tmp_img = ImageUtils.create_temp_resized_image(image_path)
+        brightness = 1 + (config.brightness+config.brightness_default)/6
+        contrast = 1 + (config.contrast+config.contrast_default)/6
+        scale = (config.width_printer, config.height_printer)
+        im = ImageUtils.image_transform(image_path, contrast, brightness, scale)
+        #im = Image.open(tmp_img)
         create_label(self.__qlr, im, "62", red=False, threshold=10, cut=True, rotate=90, dither=True)
         self.__be.write(self.__qlr.data)
         # for i in range(7):

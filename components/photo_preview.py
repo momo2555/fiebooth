@@ -1,10 +1,10 @@
-from .component_base import CompenentBase
+from .component_base import ComponentBase
 from utils.win_utils import WinUtils
 import pygame
 
-class PhotoPreview(CompenentBase):
+class PhotoPreview(ComponentBase):
     def __init__(self, window_context, image_path):
-        CompenentBase.__init__(self, window_context)
+        ComponentBase.__init__(self, window_context)
         self.__img = pygame.image.load(image_path).convert()
         self.__def_width, self.__def_height = self.__img.get_size()
         self.__w = WinUtils.wprct(0.55)

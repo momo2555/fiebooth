@@ -7,6 +7,7 @@ import pygame
 from config import config
 import re
 import logging
+from PIL import Image, ImageOps, ImageEnhance
 
 class ImageUtils():
     @staticmethod
@@ -78,5 +79,37 @@ class ImageUtils():
         for f in folders:
             photos.extend(FileUtils.get_all_photos_in_folder(f))
         return photos
+
+    @staticmethod  
+    def image_transform(image_path, contrast : float = None, brightness : float = None, scale = None):
+        im = Image.open(image_path)
+        #rescale
+        if scale is not None:
+            im = im.resize(scale)
+        im_gray = ImageOps.grayscale(im)
+        #contrast
+        if contrast is None : contrast = 1
+        cont_enhancer = ImageEnhance.Contrast(im_gray)
+        im_cont = cont_enhancer.enhance(contrast)
+        #brightness
+        if brightness is None : brightness = 1
+        bright_enhaancer = ImageEnhance.Brightness(im_cont)
+        im_final = bright_enhaancer.enhance(brightness)
+        return im_final
+    
+    @staticmethod
+    def image_transform_pyg(image_path, contrast : float = None, brightness : float = None, scale = None):
+        im = ImageUtils.image_transform(image_path, contrast, brightness, scale)
+        #return a pygame image object
+        im = im.convert('RGB')
+        mode = im.mode
+        size = im.size
+        data = im.tobytes()
+        image_tf = pygame.image.fromstring(data, size, mode)
+        #return transformed image
+        return image_tf
+    
+        
+
 
         

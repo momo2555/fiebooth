@@ -1,20 +1,39 @@
 import pygame
-from .component_base import CompenentBase
+from .component_base import ComponentBase
 from utils.win_utils import CenterMode, WinUtils
 from pygame import gfxdraw
 
-class SimpleSlider(CompenentBase):
+class SimpleSlider(ComponentBase):
     def __init__(self, windows_context, x, y, center_x : CenterMode = None,
                  center_y: CenterMode = None, value = 0, height : int = 300,
-                 width: int = 20):
-        CompenentBase.__init__(self, windows_context)
-        self.__value = 0
+                 width: int = 20, cursor_radius: int = 30, cursor_color = (255, 0, 0)):
+        ComponentBase.__init__(self, windows_context)
+        self.__value = value
+        self.__center_x = center_x
+        self.__center_y = center_y
         self.__x = x
         self.__y = y
         self.__width = width
         self.__height = height
         self.__max = 6
         self.__min = -6
+        self.__cursor_color = cursor_color
+        self.__cursor_radius = cursor_radius
+        self.__figure_pos()
+
+    def __figure_pos(self):
+        center_pos = WinUtils.get_center_position(self.__width, self.__height)
+        screen_size = WinUtils.get_screen_size()
+        # X POSITION
+        if self.__center_x == CenterMode.CENTER:
+            self.__x = center_pos[0]
+        elif self.__center_x == CenterMode.RIGHT:
+            self.__x = screen_size[0] - self.__x - self.__width
+        # Y position
+        if self.__center_y == CenterMode.CENTER:
+            self.__y = center_pos[1]
+        elif self.__center_y == CenterMode.BOTTOM:
+            self.__y = screen_size[1] - self.__y  - self.__height
 
     def set_value(self, value): 
         self.__value = value
@@ -23,22 +42,10 @@ class SimpleSlider(CompenentBase):
 
     def setup(self):
         
-        pygame.draw.rect(self._window, (200,200,200), (self.__x, self.__y, self.__width, self.__height))
+        pygame.draw.rect(self._window, (170,170,170), (self.__x, self.__y, self.__width, self.__height))
 
-        #if self.vertical:
-        # if self.curved:
-        #     pygame.draw.circle(self._window, (255, 0, 0), (self.__x + self.__width // 2, self.__y), 30)
-        #     pygame.draw.circle(self.win, self.colour, (self._x + self._width // 2, self._y + self._height),
-        #                         self.radius)
         circle = (self.__x + self.__width // 2,
                     int(self.__y + (self.__max - self.__value) / (self.__max - self.__min) * self.__height))
-        # else:
-        #     if self.curved:
-        #         pygame.draw.circle(self.win, self.colour, (self._x, self._y + self._height // 2), self.radius)
-        #         pygame.draw.circle(self.win, self.colour, (self._x + self._width, self._y + self._height // 2),
-        #                            self.radius)
-        #     circle = (int(self._x + (self.value - self.min) / (self.max - self.min) * self._width),
-        #               self._y + self._height // 2)
 
-        gfxdraw.filled_circle(self._window, *circle, 30, (255, 0, 0))
-        gfxdraw.aacircle(self._window, *circle, 30, (255, 0, 0))
+        gfxdraw.filled_circle(self._window, *circle, self.__cursor_radius, self.__cursor_color)
+        gfxdraw.aacircle(self._window, *circle, self.__cursor_radius, self.__cursor_color)

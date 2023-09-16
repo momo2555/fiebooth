@@ -14,3 +14,7 @@ green_btn: 26
 red_btn: 0
 yellow_btn: 0
 blue_btn: 0
+contrast: 0
+brightness: 0
+contrast_default: -3
+brightness_default: +2
