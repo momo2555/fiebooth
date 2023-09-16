@@ -175,9 +175,9 @@ class FieboothApi():
         if username == "admin":
             return SimpleUser(username="admin", password=ADMIN_PASSWORD, 
                               hashpassword=ADMIN_PASSWORD)
-        elif username == config.USER_NAME:
-            return SimpleUser(username=config.USER_NAME, password=config.USER_PASSWORD, 
-                              hashpassword=config.USER_PASSWORD)
+        elif username == config.user_name:
+            return SimpleUser(username=config.user_name, password=config.user_password, 
+                              hashpassword=config.user_password)
         else:
             return None
 

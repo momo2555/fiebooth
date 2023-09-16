@@ -3,8 +3,6 @@ from controllers.cameraController import CameraController
 from controllers.buttonsController import ButtonsController
 from utils.camera_utils import CameraUtils
 import pygame
-from pygame_widgets.slider import Slider
-import pygame_widgets
 from components.simple_slider import SimpleSlider
 class CameraStreamView(StateView):
     def __init__(self, state_controller, window_context, camera):

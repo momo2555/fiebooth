@@ -65,7 +65,7 @@ class ImageUtils():
         #create temp directory
         tmp_dir = FileUtils.get_temp_dir()
         tmp_img = os.path.join(tmp_dir, f"fb_{int(time.time())}.png")
-        resize_img = pygame.transform.scale(pygame.image.load(image_path),(config.WIDTH_PRINTER, config.HEIGHT_PRINTER))
+        resize_img = pygame.transform.scale(pygame.image.load(image_path),(config.width_printer, config.height_printer))
         pygame.image.save(resize_img, tmp_img)
         ImageUtils.logger().info(f"temp file {tmp_img} saved after rescaling image")
         return tmp_img

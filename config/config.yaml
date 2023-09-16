@@ -1,0 +1,11 @@
+---
+app_name: "Fiebooth ++"
+bp_pin: 18
+photos_folder: photos
+logs_folder: logs
+width_printer: 1280
+height_printer: 853
+home_delay: 6
+user_name: guest
+user_password: password
+api_enable: true

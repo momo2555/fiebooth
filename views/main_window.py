@@ -16,7 +16,7 @@ import logging
 class MainWindow:
     def __init__(self):
         pygame.init()	#init library
-        pygame.display.set_caption(config.APP_NAME)
+        pygame.display.set_caption(config.app_name)
         self.__window = pygame.display.set_mode(flags = pygame.FULLSCREEN)
         #self.__screen_width, self.__screen_height = self.__window.display.get_size()
 

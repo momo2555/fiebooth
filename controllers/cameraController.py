@@ -1,8 +1,13 @@
 from picamera2 import Picamera2
+from utils.win_utils import WinUtils
+import logging
 
 class CameraController:
     def __init__(self):
-        self.__res = (1920,1080)
+        width, height = WinUtils.get_screen_size()
+        self.logger = logging.getLogger("fiebooth")
+        self.__res = (width, height)
+        self.logger.info(f"Résolution de l'écran {self.__res}")
         self.__camera = Picamera2()
         self.__camera.preview_configuration.main.size = self.__res
         self.__camera.preview_configuration.main.format = 'BGR888'

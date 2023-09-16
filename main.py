@@ -9,6 +9,7 @@ import logging
 
 from datetime import datetime
 from api.api import FieboothApi
+from config import config
 
 
 def __init_logger():
@@ -26,7 +27,6 @@ if __name__ == "__main__":
     __init_logger()
     api = FieboothApi()
     mainWindow = MainWindow()
-    #api.run_server()
 
 
 
@@ -38,3 +38,4 @@ if __name__ == "__main__":
             logging.getLogger("fiebooth").info(f"User Exit - Keyboard interrupt")
             exit(0)
 
+    

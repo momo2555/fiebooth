@@ -5,12 +5,11 @@ from controllers.buttonsController import ButtonsController
 from utils.camera_utils import CameraUtils
 from utils.image_utils import ImageUtils
 import pygame
-from pygame_widgets.slider import Slider
-import pygame_widgets
 from components.simple_slider import SimpleSlider
 from config import config
 import random as rd
 import time
+from assets.assets import get_asset_uri
 
 class DiaporamaView(StateView):
     def __init__(self, state_controller, window_context, camera):
@@ -21,8 +20,6 @@ class DiaporamaView(StateView):
         self.__photos = []
         self.__current_photo : str = None
         self.__timer : float = None 
-        
-        
 
     def __init_buttons_events(self):
         self.__buttons_controller.add_button(pygame.K_a, self.__trigger_shot_callback)
@@ -47,12 +44,15 @@ class DiaporamaView(StateView):
     
     def __choose_photo(self):
         length = len(self.__photos)
-        self.__current_photo = self.__photos[rd.randint(0, length -1)]
+        if length > 0:
+            self.__current_photo = self.__photos[rd.randint(0, length -1)]
+        else:
+            self.__current_photo = get_asset_uri("accueil.jpg")
         self.__timer = time.time()
 
     def show(self):
         self.__init_buttons_events()
-        self.__photos = ImageUtils.get_all_user_photos_path(config.USER_NAME)
+        self.__photos = ImageUtils.get_all_user_photos_path(config.user_name)
         self.__choose_photo()
 
     def __draw_photo(self):
@@ -68,6 +68,3 @@ class DiaporamaView(StateView):
     def destroy(self) -> None:
         super().destroy()
         self.__buttons_controller.clear_triggers()
-         
-
-    
