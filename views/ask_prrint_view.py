@@ -7,14 +7,16 @@ from components.text_message import TextMessage
 from utils.win_utils import CenterMode
 from config import config
 import pygame
+import time
 
 class AskPrintView(StateView):
     def __init__(self, state_controller, window_context):
-        StateView.__init__(self, state_controller, window_context, "ask_print", "camera_stream")
+        StateView.__init__(self, state_controller, window_context, "ask_print", "printing")
         self.__photo_name : str = None
         self.__buttons_controller : ButtonsController = ButtonsController()
         self.__preview : PhotoPreview = None 
         self.__print_text : TextMessage = None
+        self.__timer : float = None
         
     
     def __init_buttons(self):
@@ -37,6 +39,7 @@ class AskPrintView(StateView):
         pass
 
     def show(self):
+        self.__timer = time.time()
         self.__init_buttons()
         self.__photo_name = self._get_artifact("photo")
         if self.__photo_name != None:
@@ -47,13 +50,14 @@ class AskPrintView(StateView):
     
     def setup(self):
         self._window.fill((255, 255, 255))
-        
         self.__buttons_controller.setup()
         if self.__photo_name != None:
             self.__preview.setup()
             self.__print_text.setup()
         else:
             self._logger.warning(f"No photo captured")
+        if time.time() - self.__timer > 8:
+            self.__no_print(None)
     
     def destroy(self) -> None:
         super().destroy()
