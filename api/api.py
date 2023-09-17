@@ -233,7 +233,7 @@ class FieboothApi():
         return user
 
     def __server_process(self):
-        uvicorn.run(app=app, host="localhost", port=5000)
+        uvicorn.run(app=app, host="0.0.0.0", port=5000,)
 
     def run_server(self):
         proc = Process(target=self.__server_process, args=(), daemon=True)

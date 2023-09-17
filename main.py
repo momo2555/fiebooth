@@ -27,13 +27,13 @@ if __name__ == "__main__":
     __init_logger()
     api = FieboothApi()
     mainWindow = MainWindow()
-
+    api.run_server()
 
 
     while True:
-        pass
         try:
             mainWindow.setup()
+            pass
         except KeyboardInterrupt as e:
             logging.getLogger("fiebooth").info(f"User Exit - Keyboard interrupt")
             exit(0)

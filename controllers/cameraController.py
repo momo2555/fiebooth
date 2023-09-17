@@ -1,5 +1,6 @@
 from picamera2 import Picamera2
 from utils.win_utils import WinUtils
+from PIL import Image
 import logging
 
 class CameraController:
@@ -13,7 +14,6 @@ class CameraController:
         self.__camera.preview_configuration.main.format = 'BGR888'
         self.__camera.configure("preview")
         self.__camera.set_controls({"AfMode":2, "AfTrigger" : 0})
-        pass
     
     def start(self):
         self.__camera.start()
@@ -26,3 +26,9 @@ class CameraController:
     
     def get_frame_as_array(self):
         return self.__camera.capture_array()
+    
+    def capture(self) -> Image:
+        return self.__camera.capture_image()
+    
+    def capture_file(self, image_name):
+        self.__camera.capture_file(image_name)
