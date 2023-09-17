@@ -40,6 +40,8 @@ class TransformController():
             self.__show_bright = False
 
     def __update_transform(self):
+        config["contrast"] = self.__contr_value
+        config["brightness"] = self.__bright_value
         contrast = 1 + (self.__contr_value)/6
         brightness = 1 + (self.__bright_value)/6
         self.__tf = ImageUtils.image_transform_pyg(self.__tf_path, contrast=contrast, brightness=brightness,
