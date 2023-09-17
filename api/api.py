@@ -24,7 +24,7 @@ import os
 from pydantic import BaseModel
 
 from config import config
-from api.models import Token, SimpleUser, TokenData
+from api.models import Token, SimpleUser, TokenData, ConfigDescriptor
 from api.utility import ApiUtilities
 
 load_dotenv()
@@ -72,13 +72,19 @@ class FieboothApi():
         
         # get images list name by user
         @app.get("/images/user/<user_name>")
-        async def get_user_phots(user_name, is_admin:self.IS_ADMIN):
-            pass
+        async def get_user_photos(user_name, is_admin:self.IS_ADMIN):
+            if is_admin:
+                photos = self.__utils.get_all_user_photos(user_name)
+                return {
+                    "user" : user_name,
+                    "photos" : photos
+                }
 
         # get images id list by folder name
         @app.get("/images/folder/<folder_name>")
         async def get_folder_photos(folder_name, is_admin:self.IS_ADMIN):
-            pass
+            if is_admin:
+                self.__utils.get_photos_in_folder(folder_name)
 
         # get folder list by user name
         @app.get("/images/folder/user/<user_name>")
@@ -94,37 +100,35 @@ class FieboothApi():
         # delete an image
         @app.delete("/image/delete/<id>")
         async def delete_image_by_id(id : str, is_admin:self.IS_ADMIN):
-            pass
+            if is_admin:
+                self.__utils.delete_image(id)
 
         #delete folder
         @app.delete("/images/folder/delete/<folder_name>")
         async def delete_folder(folder_name: str, is_admin:self.IS_ADMIN):
-            pass
+            if is_admin:
+                self.__utils.delete_folder(folder_name)
         
         # delete all user images
         @app.delete("/images/user/<user_name>")
         async def delete_user_photos(user_name: str,  is_admin:self.IS_ADMIN):
-            pass
-
-        # edit the image text (the text on top of the image)
-        @app.post("/image_text/edit/<image_text")
-        async def edit_image_text(image_text: str, is_admin:self.IS_ADMIN):
-            pass
-        
-        # get the value of the image text
-        @app.get("/image_text")
-        async def get_image_text():
-            pass
+            if is_admin:
+                self.__utils.delete_all_user_images(user_name)
         
         # edit settings
-        @app.post("/setting/edit/<param>")
-        async def edit_settings(param: str, is_admin:self.IS_ADMIN):
-            pass
+        @app.post("/setting/edit")
+        async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
+            if is_admin:
+                config[conf.key] = conf.Value
         
         # get setiing value
         @app.get("/setting/<param>")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
-            pass
+            if is_admin:
+                return {
+                    "config_key" : param,
+                    "config_value" : config[param]
+                    }
     
         # get the currrent user
         @app.get("/users/me")
@@ -153,15 +157,6 @@ class FieboothApi():
     def __hash_password(self):
         pass
 
-
-    def __decode_token(self, token):
-       pass
-
-
-    async def get_current_user(self, token: Annotated[str, Depends(oauth2_scheme)]):
-        user = self.__decode_token(token)
-        return user
-    
 
     def __verify_password(self, plain_password, hashed_password):
         return plain_password == hashed_password

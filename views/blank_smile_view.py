@@ -36,7 +36,6 @@ class BlankSmileView(StateView):
 
     def __save_picture(self):
         self.__flash.flash_on()
-        t = time.time()
         photo_name = CameraUtils.save_picture(self.__camera)
         self.__flash.flash_off()
         self._add_artifact("photo", photo_name)

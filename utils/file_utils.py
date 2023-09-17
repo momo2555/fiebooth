@@ -6,6 +6,7 @@ from pathlib import Path
 import tempfile
 from glob import glob
 from typing import List
+import shutil
 
 class FileUtils:
     @staticmethod
@@ -74,3 +75,12 @@ class FileUtils:
         if not os.path.exists(config_path):
             os.makedirs(config_path, exist_ok=True)
         return config_path
+    
+    @staticmethod
+    def delete_image(image_path: str) -> None:
+        if os.path.exists(image_path):
+            os.remove(image_path)
+        
+    def delete_folder(folder_name :str) -> None:
+        if os.path.exists(folder_name):
+                os.remove(folder_name)    
