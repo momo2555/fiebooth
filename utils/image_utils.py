@@ -9,6 +9,7 @@ import re
 import logging
 from PIL import Image, ImageOps, ImageEnhance, ImageDraw, ImageFont
 from assets.assets import get_asset_uri
+import logging
 
 class ImageUtils():
     @staticmethod
@@ -41,8 +42,7 @@ class ImageUtils():
     # (will be deleted after adding a database)
     @staticmethod
     def get_image_id_from_path(image_path: str) -> str:
-        photos_folder = FileUtils.get_photos_folder()
-        path_data = os.path.split(photos_folder)
+        path_data = os.path.split(image_path)
         if len(path_data) > 1:
             image_name = path_data[1]
             folder_name = os.path.basename(path_data[0])

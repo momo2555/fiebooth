@@ -18,13 +18,13 @@ class ApiUtilities():
         image_path = ImageUtils.get_image_path_from_id(image_id)
         FileUtils.delete_image(image_path)
     
-    def delete_all_user_images(self, user_name: str):
+    def delete_all_user_images(self, user_name : str):
         photos_id = self.get_all_user_photos(user_name)
         map(self.delete_image, photos_id)
     
     def delete_folder(self, folder_name : str):
         folder_path = ImageUtils.get_folder_path_from_name(folder_name)
-        FileUtils.delete_folder(folder_name)
+        FileUtils.delete_folder(folder_path)
     
     def get_photos_in_folder(self, folder_name: str) -> List[str]:
         folder_path = ImageUtils.get_folder_path_from_name(folder_name)
@@ -32,7 +32,7 @@ class ApiUtilities():
         photos_id = list(map(ImageUtils.get_image_id_from_path, photos_path))
         return photos_id
     
-    def get_all_user_photos(user_name: str) -> List[str]:
+    def get_all_user_photos(self, user_name: str) -> List[str]:
         photos_path = ImageUtils.get_all_user_photos_path(user_name)
         photos_id = list(map(ImageUtils.get_image_id_from_path, photos_path))
         return photos_id

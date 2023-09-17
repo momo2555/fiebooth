@@ -14,18 +14,18 @@ import logging
 
 
 class MainWindow:
-    def __init__(self):
+    def __init__(self, connection):
         pygame.init()	#init library
         pygame.display.set_caption(config.app_name)
         self.__window = pygame.display.set_mode(flags = pygame.FULLSCREEN)
-        #self.__screen_width, self.__screen_height = self.__window.display.get_size()
+        self.__conn = connection
 
         self.__logger = logging.getLogger("fiebooth")
-        self.__state_machine = StateMachineController()
+        self.__state_machine = StateMachineController(self.__conn)
         self.__camera : CameraController = CameraController()
         self.__camera.start()
         self.__init_state_machine()
-        
+
     def __init_state_machine(self):
         self.__logger.info(f"Init state machine")
         home_state = HomeView(self.__state_machine, self.__window)

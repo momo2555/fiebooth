@@ -2,12 +2,17 @@ from views.stateView import StateView
 from errors.errors import EmptyStateException, StateUnreachableException, DuplicateStateIdException
 from views.stateView import StateView
 from typing import List
+from config import config, Config
+import logging
 
 class StateMachineController :
-    def __init__(self):
+    def __init__(self, connection):
         self.__states = []
         self.__currentState : StateView = None
         self.__next_state_candidate : StateView = None
+        self.__config = Config()
+        self.__conn = connection
+        self.logger = logging.getLogger("fiebooth")
 
     def add_state(self, state : StateView):
         self.__states.append(state)
@@ -44,4 +49,10 @@ class StateMachineController :
             self.__currentState.clear_artifacts()
             self.__next_state_candidate = None
         self.__currentState.setup()
+        self.__process_request()
         pass
+
+    def __process_request(self):
+        if self.__conn.poll(0.2):
+            self.logger.info(f"Receive from api {self.__conn.recv()}")
+

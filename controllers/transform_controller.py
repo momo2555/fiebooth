@@ -1,7 +1,7 @@
 from components.simple_slider import SimpleSlider
 from utils.win_utils import WinUtils, CenterMode
 from utils.image_utils import ImageUtils
-from config import config
+from config import config, Config
 import pygame
 import time
 

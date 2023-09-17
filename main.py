@@ -7,6 +7,7 @@ import pygame
 import os
 import logging
 
+from multiprocessing import Pipe
 from datetime import datetime
 from api.api import FieboothApi
 from config import config
@@ -23,10 +24,11 @@ def __init_logger():
 
 
 if __name__ == "__main__":
-    
+    api_conn, pyg_conn = Pipe()
     __init_logger()
-    api = FieboothApi()
-    mainWindow = MainWindow()
+    mainWindow = MainWindow(pyg_conn)
+    api = FieboothApi(api_conn)
+    
     api.run_server()
 
 

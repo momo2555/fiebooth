@@ -36,15 +36,13 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-
-
-
 class FieboothApi():
-    def __init__(self): 
+    def __init__(self, connection): 
         self.IS_ADMIN = Annotated[bool, Depends(self.__is_user_admin)]
         self.USER = Annotated[SimpleUser, Depends(self.__get_current_user)]
-        self.__utils = ApiUtilities()
+        self.__utils = ApiUtilities() 
         self.__init__routes()
+        self.__conn = connection
         
     
     def __init__routes(self):
@@ -119,7 +117,15 @@ class FieboothApi():
         @app.post("/setting/edit")
         async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
             if is_admin:
-                config[conf.key] = conf.Value
+                self.__conn.send("YO LA MIF")
+                old_value = config[conf.key]
+                config[conf.key] = conf.value
+                
+                return {
+                    "config_key" : conf.key,
+                    "old_value" : old_value,
+                    "new_value": config[conf.key]
+                }
         
         # get setiing value
         @app.get("/setting/<param>")

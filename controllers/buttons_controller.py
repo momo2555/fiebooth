@@ -12,6 +12,7 @@ class ButtonsController():
         self.__buttons : List[Dict[str, Any]] = []
         self.logger = logging.getLogger("fiebooth")
         self.__event_lock = Lock()
+        self.__use_keyboard = config.use_keyboard
         gpio.setmode(gpio.BCM)
 
     def add_button(self, trigger, callback, lock=None, key=None):
@@ -33,7 +34,7 @@ class ButtonsController():
         gpio.add_event_detect(trigger, gpio.RISING, callback=gpio_callback, bouncetime=200)
 
     def setup(self):
-        if config.use_keyboard:
+        if self.__use_keyboard:
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.KEYDOWN:

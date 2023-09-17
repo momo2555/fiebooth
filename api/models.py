@@ -15,4 +15,4 @@ class SimpleUser(BaseModel):
 
 class ConfigDescriptor(BaseModel):
     key: str
-    Value: Any
+    value: Any
