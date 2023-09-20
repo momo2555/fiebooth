@@ -4,6 +4,7 @@ from views.stateView import StateView
 from typing import List
 from config import config, Config
 from api.models import DataExchange, ExchangeRequest, ExchangeType, ExchangeResponse, ConfigDescriptor
+from utils.image_utils import ImageUtils
 import logging
 
 class StateMachineController :
@@ -21,10 +22,13 @@ class StateMachineController :
             self.__currentState = state
             state.show()
 
-    def next_state(self):
+    def next_state(self, force_state = None):
         if self.__currentState is not None:
-            current_state_id = self.__currentState.get_state_id()
-            target_state_id = self.__currentState.get_next_state_id()
+            #current_state_id = self.__currentState.get_state_id()
+            if force_state is None:
+                target_state_id = self.__currentState.get_next_state_id()
+            else:
+                target_state_id = force_state
             next_states : List[StateView]= []
             for state in self.__states:
                 state : StateView
@@ -60,7 +64,15 @@ class StateMachineController :
 
                 
             if message["type"] == "request":
-                if message["value"] == "getConfig":
+                if message["value"] == "setConfig":
+                    key = message["configKey"]
+                    config[key] = message["configValue"]
+                    self.__conn.send({
+                        "type" : "response",
+                        "value" : "setSuccess",
+                        "configKey" : key,
+                        "configValue" : config[key],
+                    })
                     
                 if message["value"] == "getConfig":
                     key = message["configKey"]
@@ -69,6 +81,15 @@ class StateMachineController :
                         "value" : "getSuccess",
                         "configKey" : key,
                         "configValue" : config[key],
+                    })
+                if message["value"] == "print":
+                    image_id = message["imageId"]
+                    image_path = ImageUtils.get_image_path_from_id(image_id)
+                    self.__currentState._add_artifact("photo_name", image_path)
+                    self.next_state("printing")
+                    self.__conn.send({
+                        "type" : "response",
+                        "value" : "printSent",
                     })
                     
 

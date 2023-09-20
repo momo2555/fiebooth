@@ -119,22 +119,22 @@ class FieboothApi():
         @app.post("/setting/edit")
         async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
             if is_admin:
-                edit_config_req = DataExchange(type=ExchangeType.REQUEST, value=ExchangeRequest.EDIT_CONFIG_REQUEST,
-                                               args={"setting" : conf.model_dump()})
                 self.__conn.send({
-                    edit_config_req.model_dump()
+                    "type" : "request",
+                    "value" : "setConfig",
+                    "configKey" : conf.key,
+                    "configValue" : conf.value
                 })
-                response = DataExchange.model_validate(self.__conn.recv())
-                if response.type == ExchangeType.RESPONSE:
-                    if response.value == ExchangeResponse.EDIT_SUCCESS:
+                response = self.__conn.recv()
+                if response["type"] == "response":
+                    if response["value"] == "setSuccess":
                         old_value = conf.value
                         return {
-                            "config_key" : conf.key,
-                            "old_value" : old_value,
-                            "new_value": config[conf.key]
+                            "key" : response["configKey"],
+                            "value" : response["configValue"]
                         }
         
-        # get setiing value
+        # get setting value
         @app.get("/setting/<param>")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
             if is_admin:
@@ -151,11 +151,28 @@ class FieboothApi():
                             "key" : param,
                             "value" : response["configValue"]
                         }
-    
+         # print a photo
+        @app.post("/print/<image_id>")
+        async def print_photo(image_id: str, is_admin: self.IS_ADMIN):
+            if is_admin:
+                self.__conn.send({
+                    "type" : "request",
+                    "value" : "print",
+                    "imageId" : image_id
+                })
+                response = self.__conn.recv()
+                if response["type"] == "response":
+                    if response["value"] == "getSuccess":
+                        return {
+                            "print" : "sent",
+                        }
+                        
+        # /home/pi/.fiebooth/photos/17_09_23_guest/capture_170923_15-54-33_guest.png 
         # get the currrent user
         @app.get("/users/me")
         async def read_users_me(current_user: self.USER):
             return current_user
+        
         
         # identification
         @app.post("/token", response_model=Token)
@@ -175,7 +192,6 @@ class FieboothApi():
             )
             return {"access_token": access_token, "token_type": "bearer"}
         
-
     def __hash_password(self):
         pass
 

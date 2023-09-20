@@ -70,7 +70,11 @@ class DiaporamaView(StateView):
         
 
     def __draw_photo(self):
-        self.__img = pygame.image.load(self.__current_photo).convert()
+        try:
+            self.__img = pygame.image.load(self.__current_photo).convert()
+        except:
+            self._logger.warning(f"Image format not supported : {self.__current_photo}")
+            
         (sw, sh) = (WinUtils.wprct(0.9),
                   WinUtils.hprct(0.9))
         pos = WinUtils.get_center_position(sw, sh)
