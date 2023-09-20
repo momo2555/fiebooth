@@ -17,14 +17,15 @@ from fastapi.responses import Response, FileResponse
 from jose import JWTError, jwt
 
 from multiprocessing import Process
-
+import logging
 import uvicorn 
 from dotenv import load_dotenv
 import os
 from pydantic import BaseModel
 
 from config import config
-from api.models import Token, SimpleUser, TokenData, ConfigDescriptor
+from api.models import Token, SimpleUser, TokenData, ConfigDescriptor, DataExchange, \
+    ExchangeType, ExchangeRequest, ExchangeResponse
 from api.utility import ApiUtilities
 
 load_dotenv()
@@ -43,6 +44,7 @@ class FieboothApi():
         self.__utils = ApiUtilities() 
         self.__init__routes()
         self.__conn = connection
+        self.logger = logging.getLogger("fiebooth")
         
     
     def __init__routes(self):
@@ -117,24 +119,38 @@ class FieboothApi():
         @app.post("/setting/edit")
         async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
             if is_admin:
-                self.__conn.send("YO LA MIF")
-                old_value = config[conf.key]
-                config[conf.key] = conf.value
-                
-                return {
-                    "config_key" : conf.key,
-                    "old_value" : old_value,
-                    "new_value": config[conf.key]
-                }
+                edit_config_req = DataExchange(type=ExchangeType.REQUEST, value=ExchangeRequest.EDIT_CONFIG_REQUEST,
+                                               args={"setting" : conf.model_dump()})
+                self.__conn.send({
+                    edit_config_req.model_dump()
+                })
+                response = DataExchange.model_validate(self.__conn.recv())
+                if response.type == ExchangeType.RESPONSE:
+                    if response.value == ExchangeResponse.EDIT_SUCCESS:
+                        old_value = conf.value
+                        return {
+                            "config_key" : conf.key,
+                            "old_value" : old_value,
+                            "new_value": config[conf.key]
+                        }
         
         # get setiing value
         @app.get("/setting/<param>")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
             if is_admin:
-                return {
-                    "config_key" : param,
-                    "config_value" : config[param]
-                    }
+               
+                self.__conn.send({
+                    "type" : "request",
+                    "value" : "getConfig",
+                    "configKey" : param
+                })
+                response = self.__conn.recv()
+                if response["type"] == "response":
+                    if response["value"] == "getSuccess":
+                        return {
+                            "key" : param,
+                            "value" : response["configValue"]
+                        }
     
         # get the currrent user
         @app.get("/users/me")

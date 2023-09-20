@@ -3,6 +3,7 @@ from errors.errors import EmptyStateException, StateUnreachableException, Duplic
 from views.stateView import StateView
 from typing import List
 from config import config, Config
+from api.models import DataExchange, ExchangeRequest, ExchangeType, ExchangeResponse, ConfigDescriptor
 import logging
 
 class StateMachineController :
@@ -53,6 +54,21 @@ class StateMachineController :
         pass
 
     def __process_request(self):
-        if self.__conn.poll(0.2):
-            self.logger.info(f"Receive from api {self.__conn.recv()}")
+        if self.__conn.poll(0.01):
+            message = self.__conn.recv()
+            self.logger.info(f"Received message from API : {message}")
+
+                
+            if message["type"] == "request":
+                if message["value"] == "getConfig":
+                    
+                if message["value"] == "getConfig":
+                    key = message["configKey"]
+                    self.__conn.send({
+                        "type" : "response",
+                        "value" : "getSuccess",
+                        "configKey" : key,
+                        "configValue" : config[key],
+                    })
+                    
 
