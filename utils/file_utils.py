@@ -7,6 +7,7 @@ import tempfile
 from glob import glob
 from typing import List
 import shutil
+import re
 
 class FileUtils:
     @staticmethod
@@ -87,7 +88,20 @@ class FileUtils:
     def delete_image(image_path: str) -> None:
         if os.path.exists(image_path):
             os.remove(image_path)
-        
+
+    @staticmethod    
     def delete_folder(folder_name :str) -> None:
         if os.path.exists(folder_name):
                 os.remove(folder_name)    
+    
+    @staticmethod
+    def get_all_users_names() -> List[str]:
+        folders = FileUtils.get_all_photos_folder()
+        users : List[str] = []
+        for folder in folders:
+            match = re.match("([0-9]{2}_){3}(.+)", os.path.basename(os.path.normpath(folder)))
+            if match is not None:
+                user_name = match[2]
+                if not user_name in users:
+                    users.append(user_name)
+        return users

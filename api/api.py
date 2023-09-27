@@ -192,8 +192,17 @@ class FieboothApi():
                         return {
                             "print" : "sent",
                         }
-                        
-        # /home/pi/.fiebooth/photos/17_09_23_guest/capture_170923_15-54-33_guest.png 
+
+        # get the currrent user
+        @app.get("/users/all")
+        async def get_all_users(is_admin: self.IS_ADMIN):
+            if is_admin:
+                all_user_names = self.__utils.get_all_users()
+                return {
+                    "users" : all_user_names
+                }
+        
+
         # get the currrent user
         @app.get("/users/me")
         async def read_users_me(current_user: self.USER):

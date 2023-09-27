@@ -45,5 +45,8 @@ class PrintingView(StateView):
 
 
     def __print(self):
-        self.__printer.print(self.__photo_name)
+        try:
+            self.__printer.print(self.__photo_name)
+        except Exception as e:
+            self._logger.warning("Error when printing : This photo could not be printed !")
         

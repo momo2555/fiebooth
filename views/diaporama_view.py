@@ -13,6 +13,7 @@ from config import config
 import random as rd
 import time
 from assets.assets import get_asset_uri
+import os
 
 class DiaporamaView(StateView):
     def __init__(self, state_controller, window_context, camera):
@@ -51,6 +52,7 @@ class DiaporamaView(StateView):
  
     
     def __choose_photo(self):
+        self.__photos = ImageUtils.get_all_user_photos_path(config.user_name)
         length = len(self.__photos)
         if length > 0:
             self.__current_photo = self.__photos[rd.randint(0, length -1)]
@@ -60,7 +62,6 @@ class DiaporamaView(StateView):
 
     def show(self):
         self.__init_buttons_events()
-        self.__photos = ImageUtils.get_all_user_photos_path(config.user_name)
         self.__choose_photo()
         self.__transform = TransformController(self._window, self.__current_photo)
         self.__diaporama_text = TextMessage(self._window, "Diaporama", color=(192, 150, 20),
@@ -71,8 +72,11 @@ class DiaporamaView(StateView):
 
     def __draw_photo(self):
         try:
-            self.__img = pygame.image.load(self.__current_photo).convert()
-        except:
+            if os.path.exists(self.__current_photo):
+                self.__img = pygame.image.load(self.__current_photo).convert()
+            else:
+                self.__choose_photo()
+        except pygame.error as e:
             self._logger.warning(f"Image format not supported : {self.__current_photo}")
             
         (sw, sh) = (WinUtils.wprct(0.9),

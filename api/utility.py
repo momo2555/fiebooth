@@ -42,3 +42,6 @@ class ApiUtilities():
 
     def get_all_photos(self):
         return ImageUtils.get_all_images()
+    
+    def get_all_users(self):
+        return FileUtils.get_all_users_names()
