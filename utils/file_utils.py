@@ -21,6 +21,13 @@ class FileUtils:
             os.makedirs(photos_path, exist_ok=True)
         return photos_path
     
+    @staticmethod
+    def get_photo_thumbnails_folder() -> str:
+        home_dir = FileUtils.get_home_dir()
+        thumbnails_path = os.path.join(home_dir, ".fiebooth/thumbnails")
+        if not os.path.exists(thumbnails_path):
+            os.makedirs(thumbnails_path, exist_ok=True)
+        return thumbnails_path
     # Create the session folder and gives the name
     # If the folder exists it only gives the name
     @staticmethod

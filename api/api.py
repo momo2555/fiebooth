@@ -13,6 +13,7 @@ from typing import Annotated, Union
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.responses import Response, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from jose import JWTError, jwt
 
@@ -35,6 +36,19 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 app = FastAPI()
+origins = [
+    "http://localhost:5000",
+    "https://localhost",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_origin_regex="(http|https)://(.*)",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class FieboothApi():
@@ -49,15 +63,9 @@ class FieboothApi():
     
     def __init__routes(self):
         # return the image by the id (the image is resized)
-        @app.get("/image/<id>",
-                 responses = 
-                    {
-                     200: {
-                         "content": {"image/png": {}}
-                         },
-                    },
-                 response_class=Response
-                )
+        @app.get("/image/{id}", responses = { 200: {
+            "content": {"image/png": {}}
+            },}, response_class=Response)
         async def get_image_by_id(id: str, user: self.USER):
             #verifier si l'image appartient à l'utilisateur
             try:
@@ -69,9 +77,20 @@ class FieboothApi():
                     detail="Impossible to resolve id"
                 )
             
-        
+        @app.get("/image/thumbnail/{id}", responses = { 200: {
+            "content": {"image/png": {}}
+            },}, response_class=Response)
+        async def get_image_thumbnail_by_id(id: str, user: self.USER):
+            try:
+                fileName = self.__utils.get_image_thumbnail_path(id, user)
+                return FileResponse(fileName)
+            except:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Impossible to resolve id"
+                )
         # get images list name by user
-        @app.get("/images/user/<user_name>")
+        @app.get("/images/user/{user_name}")
         async def get_user_photos(user_name, is_admin:self.IS_ADMIN):
             if is_admin:
                 photos = self.__utils.get_all_user_photos(user_name)
@@ -79,15 +98,22 @@ class FieboothApi():
                     "user" : user_name,
                     "photos" : photos
                 }
-
+        @app.get("/images/all")
+        async def get_all_user_images(is_admin:self.IS_ADMIN):
+            if is_admin:
+                photos = self.__utils.get_all_photos()
+                return {
+                    "user" : "admin",
+                    "photos" : photos
+                }
         # get images id list by folder name
-        @app.get("/images/folder/<folder_name>")
+        @app.get("/images/folder/{folder_name}")
         async def get_folder_photos(folder_name, is_admin:self.IS_ADMIN):
             if is_admin:
                 self.__utils.get_photos_in_folder(folder_name)
 
         # get folder list by user name
-        @app.get("/images/folder/user/<user_name>")
+        @app.get("/images/folder/user/{user_name}")
         async def get_user_folders(user_name, is_admin:self.IS_ADMIN):
             if is_admin:
                 folders = self.__utils.get_user_folder(user_name)
@@ -98,19 +124,19 @@ class FieboothApi():
                 }
         
         # delete an image
-        @app.delete("/image/delete/<id>")
+        @app.delete("/image/delete/{id}")
         async def delete_image_by_id(id : str, is_admin:self.IS_ADMIN):
             if is_admin:
                 self.__utils.delete_image(id)
 
         #delete folder
-        @app.delete("/images/folder/delete/<folder_name>")
+        @app.delete("/images/folder/delete/{folder_name}")
         async def delete_folder(folder_name: str, is_admin:self.IS_ADMIN):
             if is_admin:
                 self.__utils.delete_folder(folder_name)
         
         # delete all user images
-        @app.delete("/images/user/<user_name>")
+        @app.delete("/images/user/{user_name}")
         async def delete_user_photos(user_name: str,  is_admin:self.IS_ADMIN):
             if is_admin:
                 self.__utils.delete_all_user_images(user_name)
@@ -135,7 +161,7 @@ class FieboothApi():
                         }
         
         # get setting value
-        @app.get("/setting/<param>")
+        @app.get("/setting/{param}")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
             if is_admin:
                
@@ -152,7 +178,7 @@ class FieboothApi():
                             "value" : response["configValue"]
                         }
          # print a photo
-        @app.post("/print/<image_id>")
+        @app.post("/print/{image_id}")
         async def print_photo(image_id: str, is_admin: self.IS_ADMIN):
             if is_admin:
                 self.__conn.send({

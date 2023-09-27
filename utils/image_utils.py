@@ -46,14 +46,14 @@ class ImageUtils():
         if len(path_data) > 1:
             image_name = path_data[1]
             folder_name = os.path.basename(path_data[0])
-            return f"[{folder_name}]{image_name}"
+            return f"{folder_name}@{image_name}"
         else:
             raise WrongIamgePath(f"The image path {image_path} has an incorrect format")
         
     # get the path from image id
     @staticmethod
     def get_image_path_from_id(image_id: str) -> str:
-        match = re.match("\[(.+)\](.+\.png)", image_id)
+        match = re.match("(.+)@(.+\.png)", image_id)
         if image_id == match[0]:
             photos_folder = FileUtils.get_photos_folder()
             folder_name = match[1]
@@ -61,6 +61,20 @@ class ImageUtils():
             return os.path.join(photos_folder, f"{folder_name}/{image_name}")
         else:
             raise WrongImageId()
+    
+    # get the image thumbnail, if the thumnail exists return the path otherwise create it
+    @staticmethod
+    def get_image_thumbnail_by_id(image_id: str) -> str:
+        thumnails_dir= FileUtils.get_photo_thumbnails_folder()
+        thumnail_path = os.path.join(thumnails_dir, image_id)
+        if not os.path.exists(thumnail_path):
+            image_path = ImageUtils.get_image_path_from_id(image_id)
+            im = Image.open(image_path)
+            factor = config.thumbnail_factor
+            scale = (int(im.size[0]/factor), int(im.size[1]/factor))
+            im = im.resize(scale)
+            im.save(thumnail_path)
+        return thumnail_path
     
     @staticmethod
     def create_temp_resized_image(image_path: str) -> str:
@@ -80,10 +94,17 @@ class ImageUtils():
         for f in folders:
             photos.extend(FileUtils.get_all_photos_in_folder(f))
         return photos
+    @staticmethod
+    def get_all_images():
+        all_folders = FileUtils.get_all_photos_folder()
+        photos = []
+        for f in all_folders:
+            photos.extend(list(map(ImageUtils.get_image_id_from_path, FileUtils.get_all_photos_in_folder(f))))
+        return photos
 
     @staticmethod  
     def image_transform(image_path, contrast : float = None, brightness : float = None, scale = None,
-                        user_text : str = None):
+                        user_text : str = None) -> Image:
         im = Image.open(image_path)
         #rescale
         if scale is not None:
@@ -119,6 +140,8 @@ class ImageUtils():
         image_tf = pygame.image.fromstring(data, size, mode)
         #return transformed image
         return image_tf
+    
+    
     
         
 

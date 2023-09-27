@@ -14,6 +14,9 @@ class ApiUtilities():
         #user verfication
         return ImageUtils.get_image_path_from_id(image_id)
     
+    def get_image_thumbnail_path(self, image_id: str, user: SimpleUser) -> str:
+        return ImageUtils.get_image_thumbnail_by_id(image_id)
+    
     def delete_image(self, image_id: str):
         image_path = ImageUtils.get_image_path_from_id(image_id)
         FileUtils.delete_image(image_path)
@@ -36,3 +39,6 @@ class ApiUtilities():
         photos_path = ImageUtils.get_all_user_photos_path(user_name)
         photos_id = list(map(ImageUtils.get_image_id_from_path, photos_path))
         return photos_id
+
+    def get_all_photos(self):
+        return ImageUtils.get_all_images()

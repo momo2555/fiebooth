@@ -12,8 +12,8 @@ class Config(MutableMapping):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Config, cls).__new__(cls)
             cls.instance.__init_config()
-            cls.instance.logger = logging.getLogger("fiebooth")
-            cls.instance.logger.info("INIT CONFIG -------------------------------------------------------------")
+            #cls.instance.logger = logging.getLogger("fiebooth")
+            #cls.instance.logger.info("INIT CONFIG -------------------------------------------------------------")
         return cls.instance
     
     def __read_config(cls, config_path):
@@ -25,7 +25,7 @@ class Config(MutableMapping):
             yaml.dump(cls.__config,  f, Dumper=Dumper)
 
     def __create_new_config(cls, config_path):
-        cls.logger.info("Create new config")
+        #cls.logger.info("Create new config")
         shutil.copyfile("config/config.yaml", config_path)
 
     def __init_config(cls):
@@ -58,7 +58,7 @@ class Config(MutableMapping):
         
         cls.__config[__key]  = __value
         
-        cls.logger.info(f"change config {__key}, {__value}")
+        #cls.logger.info(f"change config {__key}, {__value}")
         cls.__write_config()
     
     def __len__(cls) -> int:

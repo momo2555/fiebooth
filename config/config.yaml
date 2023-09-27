@@ -19,3 +19,4 @@ contrast: 0
 brightness: 0
 contrast_default: -2
 brightness_default: +1
+thumbnail_factor: 5
