@@ -107,3 +107,4 @@ https://raspberrytips.com/dhcp-server-on-raspberry-pi/
 - Add gen_config.sh script
 - Add brother_ql library in driver folder (and fork the project)
 - Create web interface
+- pagination system

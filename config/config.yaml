@@ -20,3 +20,5 @@ brightness: 0
 contrast_default: -2
 brightness_default: +1
 thumbnail_factor: 5
+wifi_ssid: ma_box
+wifi_password: mon_mot_de_passe

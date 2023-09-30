@@ -18,6 +18,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 
 from multiprocessing import Process
+from threading import Lock
+
 import logging
 import uvicorn 
 from dotenv import load_dotenv
@@ -59,6 +61,7 @@ class FieboothApi():
         self.__init__routes()
         self.__conn = connection
         self.logger = logging.getLogger("fiebooth")
+        self.__lock = Lock()
         
     
     def __init__routes(self):
@@ -144,39 +147,40 @@ class FieboothApi():
         # edit settings
         @app.post("/setting/edit")
         async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
-            if is_admin:
-                self.__conn.send({
-                    "type" : "request",
-                    "value" : "setConfig",
-                    "configKey" : conf.key,
-                    "configValue" : conf.value
-                })
-                response = self.__conn.recv()
-                if response["type"] == "response":
-                    if response["value"] == "setSuccess":
-                        old_value = conf.value
-                        return {
-                            "key" : response["configKey"],
-                            "value" : response["configValue"]
-                        }
+            with self.__lock:
+                if is_admin:
+                    self.__conn.send({
+                        "type" : "request",
+                        "value" : "setConfig",
+                        "configKey" : conf.key,
+                        "configValue" : conf.value
+                    })
+                    response = self.__conn.recv()
+                    if response["type"] == "response":
+                        if response["value"] == "setSuccess":
+                            old_value = conf.value
+                            return {
+                                "key" : response["configKey"],
+                                "value" : response["configValue"]
+                            }
         
         # get setting value
         @app.get("/setting/{param}")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
-            if is_admin:
-               
-                self.__conn.send({
-                    "type" : "request",
-                    "value" : "getConfig",
-                    "configKey" : param
-                })
-                response = self.__conn.recv()
-                if response["type"] == "response":
-                    if response["value"] == "getSuccess":
-                        return {
-                            "key" : param,
-                            "value" : response["configValue"]
-                        }
+            with self.__lock:
+                if is_admin:
+                    self.__conn.send({
+                        "type" : "request",
+                        "value" : "getConfig",
+                        "configKey" : param
+                    })
+                    response = self.__conn.recv()
+                    if response["type"] == "response":
+                        if response["value"] == "getSuccess":
+                            return {
+                                "key" : param,
+                                "value" : response["configValue"]
+                            }
          # print a photo
         @app.post("/print/{image_id}")
         async def print_photo(image_id: str, is_admin: self.IS_ADMIN):
