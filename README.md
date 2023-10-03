@@ -103,7 +103,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 https://raspberrytips.fr/serveur-dns-local-raspberry-pi/ \
 https://raspberrytips.com/dhcp-server-on-raspberry-pi/
 
-## Install docker
+## Install docker (NO NEED OF DOCKER, NOT WORKING WELL)
 ```
 cd ~
 sudo apt-get update && sudo apt-get upgrade
@@ -112,6 +112,76 @@ sudo sh get-docker.sh
 sudo usermod -aG docker [user_name]  <= "fiebooth"
 ```
 
+## Install dsnmasq
+```
+sudo apt install hostapd dnsmasq
+```
+### Config hostapd
+```
+sudo nano /etc/hostapd/hostapd.conf
+```
+Add this config
+```
+interface=wlan0
+driver=nl80211
+ssid=fiebooth
+hw_mode=g
+channel=6
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=fiebooth
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+```
+
+```
+sudo nano /etc/default/hostapd
+```
+Add this lin :
+```
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
+```
+
+```
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+```
+
+### Config DNS server
+```
+sudo nano /etc/dnsmasq.conf
+```
+Add this config
+```
+interface=wlan0
+bind-dynamic
+domain-needed
+bogus-priv
+expand-hosts
+dhcp-range=192.168.42.100,192.168.42.200,255.255.255.0,12h
+domain=fieboothy
+```
+Add the new domain
+```
+sudo nano /etc/hosts
+```
+
+### Configure the DHCP
+```
+sudo nano /etc/dhcpcd.conf
+```
+Add those line at the end of the file
+```
+nohook wpa_supplicant
+interface wlan0
+static ip_address=192.168.42.10/24
+static routers=192.168.42.1
+```
+Now reboot
 ## TODO
 - Add an indtall.sh script
 - Add gen_config.sh script
