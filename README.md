@@ -99,12 +99,24 @@ SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
-# DNS and DHCP configuration
+## DNS and DHCP configuration
 https://raspberrytips.fr/serveur-dns-local-raspberry-pi/ \
 https://raspberrytips.com/dhcp-server-on-raspberry-pi/
+
+## Install docker
+```
+cd ~
+sudo apt-get update && sudo apt-get upgrade
+curl -fsSL https://get.docker.com -o get-docker.
+sudo sh get-docker.sh
+sudo usermod -aG docker [user_name]  <= "fiebooth"
+```
+
 ## TODO
 - Add an indtall.sh script
 - Add gen_config.sh script
 - Add brother_ql library in driver folder (and fork the project)
-- Create web interface
-- pagination system
+- Create web interface (work in progress)
+- pagination system (not prio)
+- dockerise all
+
