@@ -15,11 +15,16 @@ class PrintingView(StateView):
         self.__timer : int = 0
         self.__photo_name : str = ""
         self.__i = 0
+        self.__printer_in_trouble = False
        
 
     def show(self):
         self.__i = 0
-        self.__printer = TestPrinter()
+        try:
+            self.__printer = TestPrinter()
+        except:
+            self._logger.warning("The printer seems to be not connected, Check if it's turned on and that it's connected correctly")
+            self.__printer_in_trouble = True
         self.__photo_name = self._get_artifact("photo_name")
         self.__timer = time.time()
         self.__printing_text = TextMessage(self._window, "Printing ... ",
@@ -32,7 +37,8 @@ class PrintingView(StateView):
         self._window.fill((255, 255, 255))
         self.__printing_text.setup()
         if self.__i == 2:
-            self.__print()
+            if not self.__printer_in_trouble:
+                self.__print()
         if time.time() - self.__timer > 1: 
             self._go_next_state()
         self.__i+=1

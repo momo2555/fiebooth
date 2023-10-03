@@ -210,7 +210,10 @@ class FieboothApi():
         # get the currrent user
         @app.get("/users/me")
         async def read_users_me(current_user: self.USER):
-            return current_user
+            return {
+                "username" : current_user.username,
+            }
+            
         
         
         # identification
