@@ -163,7 +163,7 @@ domain-needed
 bogus-priv
 expand-hosts
 dhcp-range=192.168.42.100,192.168.42.200,255.255.255.0,12h
-domain=fieboothy
+domain=fiebooth
 ```
 Add the new domain
 ```
