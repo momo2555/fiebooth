@@ -31,7 +31,7 @@ from api.models import Token, SimpleUser, TokenData, ConfigDescriptor, DataExcha
     ExchangeType, ExchangeRequest, ExchangeResponse
 from api.utility import ApiUtilities
 
-load_dotenv()
+
 SECRET_KEY = env.SECRET_KEY
 ALGORITHM = env.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = int(env.ACCESS_TOKEN_EXPIRE_MINUTES)
