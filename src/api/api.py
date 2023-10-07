@@ -26,16 +26,16 @@ from dotenv import load_dotenv
 import os
 from pydantic import BaseModel
 
-from config import config
+from config import config, env
 from api.models import Token, SimpleUser, TokenData, ConfigDescriptor, DataExchange, \
     ExchangeType, ExchangeRequest, ExchangeResponse
 from api.utility import ApiUtilities
 
 load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+SECRET_KEY = env.SECRET_KEY
+ALGORITHM = env.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = int(env.ACCESS_TOKEN_EXPIRE_MINUTES)
+ADMIN_PASSWORD = env.ADMIN_PASSWORD
 
 app = FastAPI()
 origins = [

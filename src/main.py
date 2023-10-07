@@ -10,7 +10,7 @@ import logging
 from multiprocessing import Pipe
 from datetime import datetime
 from api.api import FieboothApi
-from config import config
+from config import env
 
 
 def __init_logger():
@@ -21,6 +21,7 @@ def __init_logger():
     formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(levelname)s] : %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
+    logger.info(f"LOAD MESSAGE: {env.LOAD_MESSAGE}")
 
 
 if __name__ == "__main__":
@@ -28,10 +29,7 @@ if __name__ == "__main__":
     __init_logger()
     mainWindow = MainWindow(pyg_conn)
     api = FieboothApi(api_conn)
-    
     api.run_server()
-
-
     while True:
         try:
             mainWindow.setup()
