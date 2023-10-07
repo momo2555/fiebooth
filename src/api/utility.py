@@ -26,8 +26,9 @@ class ApiUtilities():
         FileUtils.delete_image(image_path)
     
     def delete_all_user_images(self, user_name : str):
-        photos_id = self.get_all_user_photos(user_name)
-        map(self.delete_image, photos_id)
+        folders = ImageUtils.get_all_user_folders(user_name)
+        for folder in folders:
+            self.delete_folder(ImageUtils.get_folder_path_from_name(folder))
     
     def delete_folder(self, folder_name : str):
         folder_path = ImageUtils.get_folder_path_from_name(folder_name)

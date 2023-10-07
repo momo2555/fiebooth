@@ -26,7 +26,7 @@ class FileUtils:
     def delete_photos_folder():
         photos_dir = FileUtils.get_photos_folder()
         if Path(photos_dir).exists():
-            os.remove(photos_dir)
+            shutil.rmtree(photos_dir)
     @staticmethod
     def get_photo_thumbnails_folder() -> str:
         home_dir = FileUtils.get_home_dir()
@@ -97,7 +97,7 @@ class FileUtils:
     @staticmethod    
     def delete_folder(folder_name :str) -> None:
         if os.path.exists(folder_name):
-                os.remove(folder_name)    
+            shutil.rmtree(folder_name) 
     
     @staticmethod
     def get_all_users_names() -> List[str]:

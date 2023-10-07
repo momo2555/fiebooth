@@ -166,6 +166,7 @@ class FieboothApi():
         async def download_all_archive(new_user: SimpleUser, is_admin: self.IS_ADMIN):
             if is_admin:
                 pass
+        #
         @app.delete("/images/all")
         async def delete_all_images(new_user: SimpleUser, is_admin: self.IS_ADMIN):
             if is_admin:
