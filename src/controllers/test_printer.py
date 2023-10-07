@@ -36,6 +36,8 @@ class TestPrinter():
         #     if res != b'':
         #         print( interpret_response(res))
         self.__be.dispose()
+        config["total_prints_len"] = config["total_prints_len"] + 1
+        config["user_prints_len"] = config["user_prints_len"] + 1
     
         
 

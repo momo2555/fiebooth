@@ -9,6 +9,10 @@ home_delay: 6
 user_name: guest
 user_password: password
 user_text: Mon super mariage !!
+user_photos_len: 0
+user_prints_len: 0
+total_photos_len: 0
+total_prints_len: 0
 api_enable: true
 use_keyboard: true
 green_btn: 26

@@ -7,6 +7,7 @@ import tempfile
 from glob import glob
 from typing import List
 import shutil
+from pathlib import Path
 import re
 
 class FileUtils:
@@ -21,7 +22,11 @@ class FileUtils:
         if not os.path.exists(photos_path):
             os.makedirs(photos_path, exist_ok=True)
         return photos_path
-    
+    @staticmethod
+    def delete_photos_folder():
+        photos_dir = FileUtils.get_photos_folder()
+        if Path(photos_dir).exists():
+            os.remove(photos_dir)
     @staticmethod
     def get_photo_thumbnails_folder() -> str:
         home_dir = FileUtils.get_home_dir()

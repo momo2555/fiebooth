@@ -22,9 +22,12 @@ class ImageUtils():
         user_folders = []
         for f in folders:
             f_name = ImageUtils.get_folder_name_from_path(f)
-            f_user_name = f_name.split("_")[-1].replace("/", "") #security?
+            match = re.match("([0-9]{2}_){3}(.+)", os.path.basename(os.path.normpath(f_name)))
+            f_user_name = match[2] if match is not None else None
+            
             if user_name == f_user_name:
                 user_folders.append(f_name)
+
         return user_folders
     
     @staticmethod

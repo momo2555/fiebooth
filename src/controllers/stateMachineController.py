@@ -94,8 +94,10 @@ class StateMachineController :
                     config["user_name"] = message["userName"]
                     config["user_password"] = message["userPassword"]
                     config["user_text"] = ""
+                    config["user_prints_len"] = 0
+                    config["user_photos_len"] = 0
                     self.logger.info(f"user created {config.user_name}")
-                    config.user_photos_len = 0
+                    
                     self.__conn.send({
                         "type" : "response",
                         "value" : "userCreated",

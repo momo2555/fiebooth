@@ -32,6 +32,9 @@ class ApiUtilities():
     def delete_folder(self, folder_name : str):
         folder_path = ImageUtils.get_folder_path_from_name(folder_name)
         FileUtils.delete_folder(folder_path)
+
+    def delete_all_images(semf):
+        FileUtils.delete_photos_folder()
     
     def get_photos_in_folder(self, folder_name: str) -> List[str]:
         folder_path = ImageUtils.get_folder_path_from_name(folder_name)
