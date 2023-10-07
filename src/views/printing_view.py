@@ -47,7 +47,8 @@ class PrintingView(StateView):
         
 
     def destroy(self):
-        del self.__printer
+        if not self.__printer_in_trouble:
+            del self.__printer
         pass
 
 
