@@ -168,8 +168,9 @@ class FieboothApi():
                 pass
         #
         @app.delete("/images/all")
-        async def delete_all_images(new_user: SimpleUser, is_admin: self.IS_ADMIN):
+        async def delete_all_images(is_admin: self.IS_ADMIN):
             if is_admin:
+                self.__utils.delete_all_images()
                 pass
         # get the currrent user
         @app.get("/users/all")
