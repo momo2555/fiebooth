@@ -73,7 +73,6 @@ class StateMachineController :
                         "configKey" : key,
                         "configValue" : config[key],
                     })
-                    
                 if message["value"] == "getConfig":
                     key = message["configKey"]
                     self.__conn.send({
@@ -91,5 +90,16 @@ class StateMachineController :
                         "type" : "response",
                         "value" : "printSent",
                     })
+                if message["value"] == "createUser":
+                    config["user_name"] = message["userName"]
+                    config["user_password"] = message["userPassword"]
+                    config["user_text"] = ""
+                    self.logger.info(f"user created {config.user_name}")
+                    config.user_photos_len = 0
+                    self.__conn.send({
+                        "type" : "response",
+                        "value" : "userCreated",
+                    })
+
                     
 

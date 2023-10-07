@@ -18,14 +18,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 
 from multiprocessing import Process
-from threading import Lock
-
 import logging
 import uvicorn 
 from dotenv import load_dotenv
-import os
-from pydantic import BaseModel
-
 from config import config, env
 from api.models import Token, SimpleUser, TokenData, ConfigDescriptor, DataExchange, \
     ExchangeType, ExchangeRequest, ExchangeResponse
@@ -57,11 +52,11 @@ class FieboothApi():
     def __init__(self, connection): 
         self.IS_ADMIN = Annotated[bool, Depends(self.__is_user_admin)]
         self.USER = Annotated[SimpleUser, Depends(self.__get_current_user)]
-        self.__utils = ApiUtilities() 
+        self.__utils = ApiUtilities(connection=connection) 
         self.__init__routes()
         self.__conn = connection
         self.logger = logging.getLogger("fiebooth")
-        self.__lock = Lock()
+        
         
     
     def __init__routes(self):
@@ -147,56 +142,34 @@ class FieboothApi():
         # edit settings
         @app.post("/setting/edit")
         async def edit_settings(conf: ConfigDescriptor, is_admin:self.IS_ADMIN):
-            with self.__lock:
-                if is_admin:
-                    self.__conn.send({
-                        "type" : "request",
-                        "value" : "setConfig",
-                        "configKey" : conf.key,
-                        "configValue" : conf.value
-                    })
-                    response = self.__conn.recv()
-                    if response["type"] == "response":
-                        if response["value"] == "setSuccess":
-                            old_value = conf.value
-                            return {
-                                "key" : response["configKey"],
-                                "value" : response["configValue"]
-                            }
+            if is_admin:
+                return self.__utils.set_config(conf)
         
         # get setting value
         @app.get("/setting/{param}")
         async def get_setting(param: str, is_admin:self.IS_ADMIN):
-            with self.__lock:
-                if is_admin:
-                    self.__conn.send({
-                        "type" : "request",
-                        "value" : "getConfig",
-                        "configKey" : param
-                    })
-                    response = self.__conn.recv()
-                    if response["type"] == "response":
-                        if response["value"] == "getSuccess":
-                            return {
-                                "key" : param,
-                                "value" : response["configValue"]
-                            }
+            if is_admin:
+                return self.__utils.get_config(param)
+            
          # print a photo
         @app.post("/print/{image_id}")
         async def print_photo(image_id: str, is_admin: self.IS_ADMIN):
             if is_admin:
-                self.__conn.send({
-                    "type" : "request",
-                    "value" : "print",
-                    "imageId" : image_id
-                })
-                response = self.__conn.recv()
-                if response["type"] == "response":
-                    if response["value"] == "getSuccess":
-                        return {
-                            "print" : "sent",
-                        }
-
+                return self.__utils.print_photo(image_id)
+        # 
+        @app.post("/images/upload/{user}")
+        async def send_all_in_cloud(new_user: SimpleUser, is_admin: self.IS_ADMIN):
+            if is_admin:
+                pass
+        # 
+        @app.post("/images/download/{user}")
+        async def download_all_archive(new_user: SimpleUser, is_admin: self.IS_ADMIN):
+            if is_admin:
+                pass
+        @app.delete("/images/all")
+        async def delete_all_images(new_user: SimpleUser, is_admin: self.IS_ADMIN):
+            if is_admin:
+                pass
         # get the currrent user
         @app.get("/users/all")
         async def get_all_users(is_admin: self.IS_ADMIN):
@@ -205,8 +178,12 @@ class FieboothApi():
                 return {
                     "users" : all_user_names
                 }
-        
-
+        # create new user
+        @app.post("/users/new")
+        async def create_new_user(new_user: SimpleUser, is_admin: self.IS_ADMIN):
+            if is_admin:
+                new_user.hashpassword = self.__get_password_hash(new_user.password)
+                return self.__utils.create_new_user(new_user)
         # get the currrent user
         @app.get("/users/me")
         async def read_users_me(current_user: self.USER):
@@ -234,9 +211,6 @@ class FieboothApi():
             )
             return {"access_token": access_token, "token_type": "bearer"}
         
-    def __hash_password(self):
-        pass
-
 
     def __verify_password(self, plain_password, hashed_password):
         return plain_password == hashed_password

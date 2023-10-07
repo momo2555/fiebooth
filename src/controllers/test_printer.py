@@ -16,9 +16,6 @@ class TestPrinter():
         self.__qlr = BrotherQLRaster("QL-800")
         self.__be = BACKEND_CLASS("file:///dev/usb/lp0")
         
-        
-    
-
     def print(self, image_path: str):
         self.__print(image_path)
         pass

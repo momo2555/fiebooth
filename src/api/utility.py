@@ -2,9 +2,13 @@ from utils.file_utils import FileUtils
 from utils.image_utils import ImageUtils
 from api.models import SimpleUser
 from typing import List
+from .models import SimpleUser, ConfigDescriptor
+from threading import Lock
+
 class ApiUtilities():
-    def __init__(self):
-        pass
+    def __init__(self, connection):
+        self.__lock = Lock()
+        self.__conn = connection
     
     #return all folders name of a user
     def get_user_folder(self, user_name):
@@ -45,3 +49,64 @@ class ApiUtilities():
     
     def get_all_users(self):
         return FileUtils.get_all_users_names()
+
+    def create_new_user(self, new_user: SimpleUser):
+        with self.__lock:
+            self.__conn.send({
+                "type" : "request",
+                "value" : "createUser",
+                "userName" : new_user.username,
+                "userPassword" : new_user.hashpassword,
+            })
+            response = self.__conn.recv()
+            if response["type"] == "response":
+                if response["value"] == "userCreated":
+                    return {
+                        "user" : "created",
+                    }
+    def get_config(self, param: str):
+        with self.__lock:
+            self.__conn.send({
+                "type" : "request",
+                "value" : "getConfig",
+                "configKey" : param
+            })
+            response = self.__conn.recv()
+            if response["type"] == "response":
+                if response["value"] == "getSuccess":
+                    return {
+                        "key" : param,
+                        "value" : response["configValue"]
+                    }
+                
+    def set_config(self, conf: ConfigDescriptor):
+        with self.__lock:
+            self.__conn.send({
+                "type" : "request",
+                "value" : "setConfig",
+                "configKey" : conf.key,
+                "configValue" : conf.value
+            })
+            response = self.__conn.recv()
+            if response["type"] == "response":
+                if response["value"] == "setSuccess":
+                    old_value = conf.value
+                    return {
+                        "key" : response["configKey"],
+                        "value" : response["configValue"]
+                    }
+                
+    def print_photo(self, image_id: str):
+        with self.__lock:
+            self.__conn.send({
+                "type" : "request",
+                "value" : "print",
+                "imageId" : image_id
+            })
+            response = self.__conn.recv()
+            if response["type"] == "response":
+                if response["value"] == "getSuccess":
+                    return {
+                        "print" : "sent",
+                    }
+

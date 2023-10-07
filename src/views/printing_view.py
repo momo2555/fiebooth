@@ -22,8 +22,9 @@ class PrintingView(StateView):
         self.__i = 0
         try:
             self.__printer = TestPrinter()
-        except:
+        except Exception as e:
             self._logger.warning("The printer seems to be not connected, Check if it's turned on and that it's connected correctly")
+            self._logger.warning(f"Error : {e}")
             self.__printer_in_trouble = True
         self.__photo_name = self._get_artifact("photo_name")
         self.__timer = time.time()
