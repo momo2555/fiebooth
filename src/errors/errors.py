@@ -17,3 +17,6 @@ class WrongIamgePath(Exception):
 
 class WrongImageId(Exception):
     pass
+
+class FieboothFolderNotFound(Exception):
+    pass

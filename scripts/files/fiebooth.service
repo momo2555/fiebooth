@@ -1,14 +1,18 @@
-
 [Unit]
-Description=Photo Booth Service - Fiebooth
+Description="Photo Booth Service - Fiebooth"
+After=multi-user.target
 
 [Service]
-User=root
-WorkingDirectory=~/project/fiebooth/src
-ExecStart=/bin/bash 'python main.py'
+Type=simple
+WorkingDirectory=/fiebooth/fiebooth
+ExecStart=/bin/bash /fiebooth/fiebooth/run.sh
 # optional items below
 Restart=always
-RestartSec=3
+RestartSec=2
+Environment="PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python3.9/site-packages"
+Environment="DISPLAY=:0"
+# Environment="XAUTHORITY=$HOME/.Xauthority"
+KillMode=process
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target

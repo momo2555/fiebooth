@@ -1,6 +1,16 @@
 #!/bin/bash
 #sudo apt install ./drivers/drivers/ql800pdrv-2.1.4-0.armhf.deb
 
+sudo apt-get update; 
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+ libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils \
+ tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+git clone https://github.com/yyuu/pyenv.git "$HOME/.pyenv"
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+source ~/.bashrc
 #curl https://pyenv.run | bash
 #echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
 #echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
@@ -31,22 +41,21 @@
 #sudo usermod -a -G lp fiebooth
 
 # install infra
-echo "Install infra, setup DNS and wifi Accsess Point ..."
+#echo "Install infra, setup DNS and wifi Accsess Point ..."
 #sudo apt install -y hostapd dnsmasq
-ls
-sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
-sudo cp scripts/files/hostapd /etc/default/hostapd #fin du fichier
-sudo systemctl unmask hostapd
-sudo systemctl enable hostapd
-sudo cp scripts/files/dnsmasq.conf /etc/dnsmasq.conf
-sudo cp scripts/files/hosts /etc/hosts # fin du fichier
-sudo cp scripts/files/dhcpcd-ap.conf /etc/dhcpcd.conf
+#sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
+#sudo cp scripts/files/hostapd /etc/default/hostapd #fin du fichier
+#sudo systemctl unmask hostapd
+#sudo systemctl enable hostapd
+#sudo cp scripts/files/dnsmasq.conf /etc/dnsmasq.conf
+#sudo cp scripts/files/hosts /etc/hosts # fin du fichier
+#sudo cp scripts/files/dhcpcd-ap.conf /etc/dhcpcd.conf
 
 # auto run on fiebooh :
-echo "Setup systemd service for Fiebooth ..."
-sudo cp scripts/files/fiebooth.service /etc/systemd/system/fiebooth.service
-sudo systemctl daemon-reload
-sudo systemctl enable fiebooth.service
+#echo "Setup systemd service for Fiebooth ..."
+#sudo cp scripts/files/fiebooth.service /etc/systemd/system/fiebooth.service
+#sudo systemctl daemon-reload
+#sudo systemctl enable fiebooth.service
 
 # reboot raspberry pi
 echo "Reboot Fiebooth ..."

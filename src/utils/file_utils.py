@@ -9,31 +9,40 @@ from typing import List
 import shutil
 from pathlib import Path
 import re
+from errors.errors import FieboothFolderNotFound
 
 class FileUtils:
     @staticmethod
     def get_home_dir():
-        return Path.home()
-    
+        fiebooth_path = Path("/fiebooth")
+        if fiebooth_path.exists():
+            return fiebooth_path
+        else:
+            raise FieboothFolderNotFound("'/fiebooth' path not found; \
+                                         please create the folder and give the access rights")
+
     @staticmethod
     def get_photos_folder() -> str:
         home_dir = FileUtils.get_home_dir()
-        photos_path = os.path.join(home_dir, ".fiebooth/photos")
+        photos_path = os.path.join(home_dir, "photos")
         if not os.path.exists(photos_path):
             os.makedirs(photos_path, exist_ok=True)
         return photos_path
+    
     @staticmethod
     def delete_photos_folder():
         photos_dir = FileUtils.get_photos_folder()
         if Path(photos_dir).exists():
             shutil.rmtree(photos_dir)
+
     @staticmethod
     def get_photo_thumbnails_folder() -> str:
         home_dir = FileUtils.get_home_dir()
-        thumbnails_path = os.path.join(home_dir, ".fiebooth/thumbnails")
+        thumbnails_path = os.path.join(home_dir, "thumbnails")
         if not os.path.exists(thumbnails_path):
             os.makedirs(thumbnails_path, exist_ok=True)
         return thumbnails_path
+    
     # Create the session folder and gives the name
     # If the folder exists it only gives the name
     @staticmethod
@@ -55,7 +64,6 @@ class FileUtils:
         photo_name = photo_name.format(day_date.strftime("capture_%d%m%y_%H-%M-%S"), user_name)
         return os.path.join(session_dir, photo_name)
     
-
     @staticmethod
     def get_all_photos_folder() -> List[str]:
         photos_path = FileUtils.get_photos_folder()
@@ -65,8 +73,10 @@ class FileUtils:
 
     @staticmethod
     def create_logs_folder():
-        if not os.path.exists("~/.fiebooth/logs"):
-            os.mkdir("~/.fiebooth/logs")
+        # TO DO
+        home_dir = FileUtils.get_home_dir()
+        if not os.path.exists("logs"):
+            os.mkdir("logs")
 
     @staticmethod
     def get_temp_dir() -> str:
@@ -84,7 +94,7 @@ class FileUtils:
     @staticmethod
     def get_config_folder() -> str:
         home_dir = FileUtils.get_home_dir()
-        config_path = os.path.join(home_dir, ".fiebooth/config")
+        config_path = os.path.join(home_dir, "config")
         if not os.path.exists(config_path):
             os.makedirs(config_path, exist_ok=True)
         return config_path

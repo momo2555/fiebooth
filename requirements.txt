@@ -1,6 +1,5 @@
 annotated-types==0.5.0
 anyio==3.7.1
-arandr==0.1.10
 astroid==2.5.1
 asttokens==2.0.4
 attrs==23.1.0
@@ -18,7 +17,6 @@ click==7.1.2
 colorama==0.4.4
 colorzero==1.1
 cryptography==3.3.2
-cupshelpers==1.0
 dbus-python==1.2.16
 distro==1.5.0
 docutils==0.16
@@ -40,7 +38,6 @@ isort==5.6.4
 itsdangerous==1.1.0
 jedi==0.18.0
 Jinja2==2.11.3
-lazy-object-proxy==0.0.0
 logilab-common==1.8.1
 lxml==4.6.3
 MarkupSafe==1.1.1
@@ -72,7 +69,7 @@ pycparser==2.21
 pycups==2.0.1
 pydantic==2.3.0
 pydantic_core==2.6.3
-pygame==1.9.6
+pygame==2.5.2
 Pygments==2.7.1
 PyGObject==3.38.0
 pyinotify==0.9.6
@@ -80,8 +77,6 @@ PyJWT==1.7.1
 pylint==2.7.2
 PyOpenGL==3.1.5
 pyOpenSSL==20.0.1
-PyQt5==5.15.2
-PyQt5-sip==12.8.1
 pyserial==3.5b0
 pysmbc==1.0.23
 python-apt==2.2.1
