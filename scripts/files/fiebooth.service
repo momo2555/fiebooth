@@ -4,7 +4,7 @@ Description=Photo Booth Service - Fiebooth
 
 [Service]
 User=root
-WorkingDirectory=/home/fiebooth/project/fiebooth/src
+WorkingDirectory=~/project/fiebooth/src
 ExecStart=/bin/bash 'python main.py'
 # optional items below
 Restart=always
