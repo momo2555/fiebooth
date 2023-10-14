@@ -3,8 +3,9 @@
 
 sudo apt-get update; 
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
- libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils \
- tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+ libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils grep \
+ tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libblas3 liblapack3 \
+ liblapack-dev libblas-dev libcap-dev
 git clone https://github.com/yyuu/pyenv.git "$HOME/.pyenv"
 
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
@@ -16,11 +17,13 @@ source ~/.bashrc
 #echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
 #echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 #source ~/.bashrc
-#pyenv install 3.9.2
-#pushd ..
+pyenv install 3.9.2
+pyenv virtualenv 3.9.2 fiebooth
+pushd /fiebooh/fiebooh
 # python env install
 #echo "Update python environment ..."
-#python -m pip install requirements.txt
+python -m pip install -upgrade pip
+python -m pip install requirements.txt
 
 #install fiebooth portail
 #echo "Install Fiebooth Portail ..."
