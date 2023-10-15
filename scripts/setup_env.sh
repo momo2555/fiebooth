@@ -51,9 +51,13 @@ ln -s "$HOME/.pyenv/versions/fiebooth/bin/python" env/python
 #sudo usermod -a -G lp fiebooth
 
 # install infra
+
 #echo "Install infra, setup DNS and wifi Accsess Point ..."
+SSID="fiebooth-$(openssl rand -hex 2)"
+echo "$SSID" > scripts/files/.ssid
 #sudo apt install -y hostapd dnsmasq
-#sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
+sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
+sudo sed -i -e "s/_ssid_/$SSID/g" /etc/hostapd/hostapd.conf
 #sudo cp scripts/files/hostapd /etc/default/hostapd #fin du fichier
 #sudo systemctl unmask hostapd
 #sudo systemctl enable hostapd
@@ -62,7 +66,7 @@ ln -s "$HOME/.pyenv/versions/fiebooth/bin/python" env/python
 #sudo cp scripts/files/dhcpcd-ap.conf /etc/dhcpcd.conf
 
 # auto run on fiebooh :
-#echo "Setup systemd service for Fiebooth ..."
+echo "Setup systemd service for Fiebooth ..."
 sudo cp scripts/files/fiebooth.desktop /etc/xdg/autostart/fiebooth.desktop
 
 #sudo cp scripts/files/fiebooth.service /etc/systemd/system/fiebooth.service

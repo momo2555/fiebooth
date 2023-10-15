@@ -177,3 +177,4 @@ pyrightconfig.json
 fiebooth
 portail
 *.swp
+.ssid
