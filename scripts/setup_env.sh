@@ -5,7 +5,8 @@ sudo apt-get update;
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
  libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils grep \
  tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libblas3 liblapack3 \
- liblapack-dev libblas-dev libcap-dev
+ liblapack-dev libblas-dev libcap-dev python3-libcamera python3-kms++ \
+ libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-ttf-2.0-0
 git clone https://github.com/yyuu/pyenv.git "$HOME/.pyenv"
 
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
@@ -24,6 +25,9 @@ pushd /fiebooh/fiebooh
 #echo "Update python environment ..."
 python -m pip install -upgrade pip
 python -m pip install requirements.txt
+ln -s /usr/lib/python3/dist-packages/libcamera "$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages/."
+ln -s /usr/lib/python3/dist-packages/pykms "$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages/."
+
 
 #install fiebooth portail
 #echo "Install Fiebooth Portail ..."

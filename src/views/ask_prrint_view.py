@@ -1,6 +1,5 @@
 from .stateView import StateView
 from controllers.buttons_controller import ButtonsController
-from controllers.printer_controller import PrinterController
 from controllers.test_printer import TestPrinter
 from components.photo_preview import PhotoPreview
 from components.text_message import TextMessage
