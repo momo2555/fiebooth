@@ -1,0 +1,3 @@
+[submodule "src/drivers/brother_ql"]
+	path = src/drivers/brother_ql
+	url = git@github.com:momo2555/brother_ql.git
