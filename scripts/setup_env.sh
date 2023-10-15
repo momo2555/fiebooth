@@ -7,7 +7,8 @@ sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
  tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libblas3 liblapack3 \
  liblapack-dev libblas-dev libcap-dev python3-libcamera python3-kms++ \
  libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-ttf-2.0-0
-git clone https://github.com/yyuu/pyenv.git "$HOME/.pyenv"
+git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
+git clone https://github.com/pyenv/pyenv-virtualenv.git "$HOME/.pyenv/plugins/pyenv-virtualenv"
 
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
 echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
@@ -60,6 +61,8 @@ ln -s /usr/lib/python3/dist-packages/pykms "$HOME/.pyenv/versions/fiebooth/lib/p
 
 # auto run on fiebooh :
 #echo "Setup systemd service for Fiebooth ..."
+sudo cp scripts/files/fiebooth.desktop /etc/xdg/autostart/fiebooth.desktop
+
 #sudo cp scripts/files/fiebooth.service /etc/systemd/system/fiebooth.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable fiebooth.service

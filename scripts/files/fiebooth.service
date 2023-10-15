@@ -9,9 +9,9 @@ ExecStart=/bin/bash /fiebooth/fiebooth/run.sh
 # optional items below
 Restart=always
 RestartSec=2
-Environment="PYTHONPATH=$PYTHONPATH:$HOME/.local/lib/python3.9/site-packages"
+Environment="PYTHONPATH=$PYTHONPATH:$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages"
 Environment="DISPLAY=:0"
-# Environment="XAUTHORITY=$HOME/.Xauthority"
+Environment="XAUTHORITY=$HOME/.Xauthority"
 KillMode=process
 
 [Install]

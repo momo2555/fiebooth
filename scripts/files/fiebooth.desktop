@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Fiebooth
+Comment=Fiebooth services
+NoDisplay=false
+Exec=/usr/bin/lxterminal -e /fiebooth/fiebooth/run.sh
+NotShowIn=GNOME;KDE;XFCE;
