@@ -20,7 +20,6 @@ class TestPrinter():
         self.__print(image_path)
         pass
 
-    @retry(stop=stop_after_attempt(7))
     def __print(self, image_path: str):
         
         #tmp_img = ImageUtils.create_temp_resized_image(image_path)

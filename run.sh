@@ -16,7 +16,10 @@ sudo python -m http.server 80 &
 cd ..
 
 pids=$(jobs -p)
+echo "jobs = $pids"
 kill_processes() {
+  echo "kill every body !! :)"
+  kill $!
   for pid in $pids; do
     kill $pid
   done
