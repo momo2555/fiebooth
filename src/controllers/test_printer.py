@@ -1,10 +1,10 @@
 import brother_ql
 from tenacity import retry, stop_after_attempt
-from brother_ql import BrotherQLRaster, create_label
-from brother_ql.backends import backend_factory, guess_backend
-from brother_ql.devicedependent import models, label_type_specs, label_sizes
-from brother_ql.devicedependent import ENDLESS_LABEL, DIE_CUT_LABEL, ROUND_DIE_CUT_LABEL
-from brother_ql.reader import OPCODES, chunker, merge_specific_instructions, interpret_response, match_opcode
+from drivers import BrotherQLRaster, create_label
+from drivers import backend_factory, guess_backend
+from drivers import models, label_type_specs, label_sizes
+from drivers import ENDLESS_LABEL, DIE_CUT_LABEL, ROUND_DIE_CUT_LABEL
+from drivers import OPCODES, chunker, merge_specific_instructions, interpret_response, match_opcode
 from PIL import Image
 from utils.image_utils import ImageUtils
 from config import config
