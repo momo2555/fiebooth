@@ -21,7 +21,6 @@ class TestPrinter():
         pass
 
     def __print(self, image_path: str):
-        
         #tmp_img = ImageUtils.create_temp_resized_image(image_path)
         brightness = 1 + (config.brightness+config.brightness_default)/6
         contrast = 1 + (config.contrast+config.contrast_default)/6

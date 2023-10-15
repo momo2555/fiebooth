@@ -28,7 +28,9 @@ python -m pip install -upgrade pip
 python -m pip install requirements.txt
 ln -s /usr/lib/python3/dist-packages/libcamera "$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages/."
 ln -s /usr/lib/python3/dist-packages/pykms "$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages/."
-
+mkdir env
+ln -s "$HOME/.pyenv/versions/fiebooth/lib/python3.9/site-packages" env/site-packages
+ln -s "$HOME/.pyenv/versions/fiebooth/bin/python" env/python
 
 #install fiebooth portail
 #echo "Install Fiebooth Portail ..."
