@@ -14,6 +14,7 @@ import random as rd
 import time
 from assets.assets import get_asset_uri
 import os
+from utils.colors_utils import FiColor
 
 class DiaporamaView(StateView):
     def __init__(self, state_controller, window_context, camera):
@@ -64,11 +65,14 @@ class DiaporamaView(StateView):
         self.__init_buttons_events()
         self.__choose_photo()
         self.__transform = TransformController(self._window, self.__current_photo)
-        self.__diaporama_text = TextMessage(self._window, "Diaporama", color=(192, 150, 20),
+        self.__diaporama_text = TextMessage(self._window, "Diaporama", color=FiColor.HIGHLIGHT,
                                             x = WinUtils.wprct(0.1),
                                             y = WinUtils.hprct(0.1),
                                             center_y=CenterMode.BOTTOM, font_size=WinUtils.hprct(0.06))
-        
+        self.__images_counter_text = TextMessage(self._window, f"{config.user_photos_len}", color=FiColor.WHITE,
+                                            x = WinUtils.wprct(0.07),
+                                            y = WinUtils.hprct(0.053),
+                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.06))
 
     def __draw_photo(self):
         try:
@@ -79,17 +83,24 @@ class DiaporamaView(StateView):
         except pygame.error as e:
             self._logger.warning(f"Image format not supported : {self.__current_photo}")
             
-        (sw, sh) = (WinUtils.wprct(0.9),
-                  WinUtils.hprct(0.9))
-        pos = WinUtils.get_center_position(sw, sh)
+        (sw, sh) = (WinUtils.wprct(0.5), WinUtils.hprct(0.5))
+        pos = (WinUtils.wprct(0.45), WinUtils.hprct(0.25))
         self.__img = pygame.transform.scale(self.__img, (sw, sh))
         self._window.blit(self.__img, pos)
+    
+    def __draw_photos_length(self):
+        (w, h) = (WinUtils.wprct(0.13), WinUtils.hprct(0.08))
+        (x, y) = (WinUtils.wprct(0.05), WinUtils.hprct(0.05))
+        pygame.draw.rect(self._window, FiColor.HIGHLIGHT, pygame.Rect(x, y, w, h),  int(h/2), int(h/2))
+        self.__images_counter_text.setup()
+        
 
     def setup(self):
-        self._window.fill((192, 150, 20))
+        self._window.fill(FiColor.BACK_COLOR)
         if time.time() - self.__timer > 4:
             self.__choose_photo()
         self.__draw_photo()
+        self.__draw_photos_length()
         self.__buttons_controller.setup()
         self.__diaporama_text.setup()
         self.__transform.setup()

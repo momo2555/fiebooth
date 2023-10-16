@@ -5,9 +5,9 @@ cd /fiebooth/fiebooth
 cd src
 source ~/.bashrc
 export "XAUTHORITY=$HOME/.Xauthority"
-export "PYTHONPATH=$PYTHONPATH:/fiebooth/fiebooth/env/site-packages"
+export "PYTHONPATH=$PYTHONPATH:/fiebooth/env/site-packages"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-DISPLAY=:0 XAUTHORITY=$XAUTHORITY  /fiebooth/fiebooth/env/python main.py &
+DISPLAY=:0 XAUTHORITY=$XAUTHORITY /fiebooth/env/python main.py &
 cd ..
 
 # Run Portail
