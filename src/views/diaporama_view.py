@@ -15,6 +15,8 @@ import time
 from assets.assets import get_asset_uri
 import os
 from utils.colors_utils import FiColor
+import qrcode
+import PIL.Image
 
 class DiaporamaView(StateView):
     def __init__(self, state_controller, window_context, camera):
@@ -49,8 +51,6 @@ class DiaporamaView(StateView):
 
     def __config_brightness_down(self, e):
         self.__transform.brightness_down()
-        pass
- 
     
     def __choose_photo(self):
         self.__photos = ImageUtils.get_all_user_photos_path(config.user_name)
@@ -83,11 +83,69 @@ class DiaporamaView(StateView):
         except pygame.error as e:
             self._logger.warning(f"Image format not supported : {self.__current_photo}")
             
-        (sw, sh) = (WinUtils.wprct(0.5), WinUtils.hprct(0.5))
-        pos = (WinUtils.wprct(0.45), WinUtils.hprct(0.25))
+        (sw, sh) = (WinUtils.wprct(0.45), WinUtils.hprct(0.45))
+        pos = (WinUtils.wprct(0.5), WinUtils.hprct(0.275))
         self.__img = pygame.transform.scale(self.__img, (sw, sh))
         self._window.blit(self.__img, pos)
     
+    def __draw_wifi_qrcode(self):
+        self.__wifi_text = TextMessage(self._window, "1) Se connecter au WIFI Fiebooth", color=FiColor.WHITE,
+                                            x = WinUtils.wprct(0.1),
+                                            y = WinUtils.hprct(0.17),
+                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+        self.__wifi_text.setup()
+        ssid = "fiebooth-c913"
+        password = "fiebooth"
+        data = f"WIFI:T:PWA;S:{ssid};P:{password};;"
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=2,
+        )
+        qr.add_data(data)
+        qr.make(fit=True)
+        img  = qr.make_image(fill_color=FiColor.HIGHLIGHT, back_color=FiColor.WHITE)
+        img.save("test.png")
+
+        (w, h) = (WinUtils.hprct(0.27), WinUtils.hprct(0.27))
+        (x, y) = (WinUtils.wprct(0.25) - int(w/2), WinUtils.hprct(0.22))
+        pygame.draw.rect(self._window, FiColor.WHITE, pygame.Rect(x, y, w, h),  int(h/2), 30)
+
+        py_img = pygame.image.load("test.png").convert()
+        (sw, sh) = (WinUtils.hprct(0.25), WinUtils.hprct(0.25))
+        pos = (WinUtils.wprct(0.25) - int(sw/2), WinUtils.hprct(0.23))
+        py_img = pygame.transform.scale(py_img, (sw, sh))
+        self._window.blit(py_img, pos)
+
+    def __draw_url_qrcode(self):
+        self.__url_text = TextMessage(self._window, "2) Accéder au portail Fiebooth", color=FiColor.WHITE,
+                                            x = WinUtils.wprct(0.1),
+                                            y = WinUtils.hprct(0.50),
+                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+        self.__url_text.setup()
+        url = "http://portail.fiebooth"
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=2,
+        )
+        qr.add_data(url)
+        qr.make(fit=True)
+        img  = qr.make_image(fill_color=FiColor.HIGHLIGHT, back_color=FiColor.WHITE)
+        img.save("test2.png")
+
+        (w, h) = (WinUtils.hprct(0.27), WinUtils.hprct(0.27))
+        (x, y) = (WinUtils.wprct(0.25) - int(w/2), WinUtils.hprct(0.55))
+        pygame.draw.rect(self._window, FiColor.WHITE, pygame.Rect(x, y, w, h),  int(h/2), 30)
+
+        py_img = pygame.image.load("test2.png").convert()
+        (sw, sh) = (WinUtils.hprct(0.25), WinUtils.hprct(0.25))
+        pos = (WinUtils.wprct(0.25) - int(sw/2), WinUtils.hprct(0.56))
+        py_img = pygame.transform.scale(py_img, (sw, sh))
+        self._window.blit(py_img, pos)
+
     def __draw_photos_length(self):
         (w, h) = (WinUtils.wprct(0.13), WinUtils.hprct(0.08))
         (x, y) = (WinUtils.wprct(0.05), WinUtils.hprct(0.05))
@@ -103,7 +161,10 @@ class DiaporamaView(StateView):
         self.__draw_photos_length()
         self.__buttons_controller.setup()
         self.__diaporama_text.setup()
+        self.__draw_wifi_qrcode()
+        self.__draw_url_qrcode()
         self.__transform.setup()
+        
         
         
     def destroy(self) -> None:
