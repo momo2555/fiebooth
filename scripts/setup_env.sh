@@ -22,6 +22,7 @@ source ~/.bashrc
 pyenv install 3.9.2
 pyenv virtualenv 3.9.2 fiebooth
 pushd /fiebooh/fiebooh
+mkdir -p /fiebooth/config
 # python env install
 #echo "Update python environment ..."
 python -m pip install -upgrade pip
@@ -54,7 +55,7 @@ ln -s "$HOME/.pyenv/versions/fiebooth/bin/python" env/python
 
 #echo "Install infra, setup DNS and wifi Accsess Point ..."
 SSID="fiebooth-$(openssl rand -hex 2)"
-echo "$SSID" > scripts/files/.ssid
+echo "$SSID" > /fiebooth/config/.ssid
 #sudo apt install -y hostapd dnsmasq
 sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
 sudo sed -i -e "s/_ssid_/$SSID/g" /etc/hostapd/hostapd.conf

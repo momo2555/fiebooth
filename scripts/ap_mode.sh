@@ -1,5 +1,5 @@
 #!/bin/bash
-SSID=$(cat files/.ssid)
+SSID=$(cat /fiebooth/config/.ssid)
 sudo cp files/dhcpcd-ap.conf /etc/dhcpcd.conf
 sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
 sudo sed -i -e "s/_ssid_/$SSID/g" /etc/hostapd/hostapd.conf
