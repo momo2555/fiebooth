@@ -62,6 +62,18 @@ class DiaporamaView(StateView):
             self.__current_photo = get_asset_uri("accueil.jpg")
         self.__timer = time.time()
 
+        try:
+            if os.path.exists(self.__current_photo):
+                self.__img = pygame.image.load(self.__current_photo).convert()
+            else:
+                self.__choose_photo()
+        except pygame.error as e:
+            self._logger.warning(f"Image format not supported : {self.__current_photo}")
+        (sw, sh) = (WinUtils.wprct(0.39), WinUtils.hprct(0.39))
+        self.__img = pygame.transform.scale(self.__img, (sw, sh))
+
+
+
     def show(self):
         self.__init_buttons_events()
         self.__choose_photo()
@@ -74,20 +86,16 @@ class DiaporamaView(StateView):
                                             x = WinUtils.wprct(0.07),
                                             y = WinUtils.hprct(0.053),
                                             center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.06))
+        
+        self.__photo_pos = [WinUtils.wprct(0.5), WinUtils.hprct(0.275)]
+        self.__speed = 9
 
     def __draw_photo(self):
-        try:
-            if os.path.exists(self.__current_photo):
-                self.__img = pygame.image.load(self.__current_photo).convert()
-            else:
-                self.__choose_photo()
-        except pygame.error as e:
-            self._logger.warning(f"Image format not supported : {self.__current_photo}")
-            
-        (sw, sh) = (WinUtils.wprct(0.45), WinUtils.hprct(0.45))
-        pos = (WinUtils.wprct(0.5), WinUtils.hprct(0.275))
-        self.__img = pygame.transform.scale(self.__img, (sw, sh))
+        pos = (self.__photo_pos[0], self.__photo_pos[1] - WinUtils.hprct(0.5))
         self._window.blit(self.__img, pos)
+        self.__photo_pos[1] = (self.__photo_pos[1]+self.__speed)%WinUtils.hprct(1.5)
+        if self.__photo_pos[1] < self.__speed+1:
+            self.__choose_photo()
     
     def __draw_wifi_qrcode(self):
         
@@ -117,13 +125,13 @@ class DiaporamaView(StateView):
         self.__images_counter_text.setup()
         
     def setup(self):
-        self._window.fill(FiColor.BACK_COLOR)
-        if time.time() - self.__timer > 4:
-            self.__choose_photo()
+        self._window.fill(FiColor.BACK)
+        #if time.time() - self.__timer > 4:
+        #    self.__choose_photo()
         self.__draw_photo()
         self.__draw_photos_length()
         self.__buttons_controller.setup()
-        self.__diaporama_text.setup()
+        #self.__diaporama_text.setup()
         self.__draw_wifi_qrcode()
         self.__draw_url_qrcode()
         self.__transform.setup()

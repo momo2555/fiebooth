@@ -45,6 +45,6 @@ class MainWindow:
 
     def setup(self): 
         self.__state_machine.setup()
-        pygame.time.delay(10)
+        pygame.time.delay(2)
         pygame.display.update()
     
