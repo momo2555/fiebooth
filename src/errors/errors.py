@@ -20,3 +20,6 @@ class WrongImageId(Exception):
 
 class FieboothFolderNotFound(Exception):
     pass
+
+class MissingWifiConfiguration(Exception):
+    pass
