@@ -44,7 +44,7 @@ class FiQrcode(ComponentBase):
 
         qr.add_data(data)
         qr.make(fit=True)
-        img = qr.make_image(fill_color=FiColor.HIGHLIGHT, back_color=FiColor.WHITE)
+        img = qr.make_image(fill_color=FiColor.DARK, back_color=FiColor.WHITE)
         img.save(self.__img_path)
 
     def set_x(self, value):
