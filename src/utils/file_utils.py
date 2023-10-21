@@ -72,11 +72,21 @@ class FileUtils:
         return folders
 
     @staticmethod
-    def create_logs_folder():
+    def get_logs_folder():
         # TO DO
         home_dir = FileUtils.get_home_dir()
-        if not os.path.exists("logs"):
-            os.mkdir("logs")
+        logs_dir = Path(home_dir, "logs")
+        if not logs_dir.exists():
+            logs_dir.mkdir()
+        return logs_dir
+    
+    @staticmethod
+    def get_new_session_log_file():
+        logs_dir = FileUtils.get_logs_folder()
+        day_date : datetime = datetime.fromtimestamp(time.time())
+        logfile = day_date.strftime("logs_%d-%m-%y_%H-%M-%S.txt")
+        return Path(logs_dir, logfile)
+        
 
     @staticmethod
     def get_temp_dir() -> str:

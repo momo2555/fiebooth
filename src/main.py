@@ -1,6 +1,7 @@
 from controllers.buttons_controller import ButtonsController
 from controllers.cameraController import CameraController
 from controllers.test_printer import TestPrinter
+from utils.file_utils import FileUtils
 
 from views.main_window import MainWindow
 import pygame
@@ -16,10 +17,17 @@ from config import env
 def __init_logger():
     logger = logging.getLogger('fiebooth')
     logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(levelname)s] : %(message)s')
+
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('[%(asctime)s] [%(name)s] [%(levelname)s] : %(message)s')
     ch.setFormatter(formatter)
+
+    fh = logging.FileHandler(FileUtils.get_new_session_log_file())
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+
+    logger.addHandler(fh)
     logger.addHandler(ch)
     logger.info(f"LOAD MESSAGE: {env.LOAD_MESSAGE}")
 
