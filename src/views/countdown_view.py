@@ -4,8 +4,10 @@ from controllers.cameraController import CameraController
 from utils.camera_utils import CameraUtils
 from utils.win_utils import CenterMode
 from components.text_message import TextMessage
+from components.fiebooth_logo import FieboothLogo, LogoColorMode
 import time
 import pygame
+
 
 class CountDownView(StateView):
     def __init__(self, state_controller, window_context, camera):
@@ -16,7 +18,7 @@ class CountDownView(StateView):
 
     def show(self):
         self.__timer = time.time()
-        
+        self.__logo = FieboothLogo(self._window, LogoColorMode.LIGHT)
 
     def setup(self):
         self.__show_camera_stream()
@@ -38,3 +40,4 @@ class CountDownView(StateView):
                                             center_x=CenterMode.CENTER, font_size=400,
                                             center_y=CenterMode.CENTER, color=(67,134, 213))
         count.setup()
+        self.__logo.setup()

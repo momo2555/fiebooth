@@ -26,7 +26,7 @@ class TextMessage(ComponentBase):
         center_pos = WinUtils.get_center_position(*temp_size)
         screen_size = WinUtils.get_screen_size()
         # X POSITION
-        gravity_sign = (1, 1)
+        gravity_sign = [1, 1]
         if self.__center_x == CenterMode.CENTER:
             self.__x = center_pos[0]
         elif self.__center_x == CenterMode.RIGHT:

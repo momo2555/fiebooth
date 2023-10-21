@@ -3,6 +3,7 @@ from controllers.buttons_controller import ButtonsController
 from controllers.test_printer import TestPrinter
 from components.photo_preview import PhotoPreview
 from components.text_message import TextMessage
+from components.fiebooth_logo import LogoColorMode, FieboothLogo
 from utils.win_utils import CenterMode
 from config import config
 import pygame
@@ -46,9 +47,10 @@ class AskPrintView(StateView):
             self.__print_text = TextMessage(self._window, "Imprimer la photo ?",
                                             center_x=CenterMode.CENTER, font_size=100,
                                             center_y=CenterMode.BOTTOM, y = 100)
-    
+        self.__logo = FieboothLogo(self._window, LogoColorMode.DARK)
     def setup(self):
         self._window.fill((255, 255, 255))
+        self.__logo.setup()
         self.__buttons_controller.setup()
         if self.__photo_name != None:
             self.__preview.setup()
