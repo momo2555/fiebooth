@@ -8,7 +8,7 @@ import os
 
 
 class Diaporama(ComponentBase):
-    MAX_FRAME = 3
+    MAX_FRAME = 4
 
     def __init__(self, window_context, w, h, x, speed : int = 4):
         super().__init__(window_context)
@@ -17,7 +17,7 @@ class Diaporama(ComponentBase):
         self.__x = x
         self.__images = []
         self.__speed = speed
-        self.__gap = WinUtils.hprct(0.08)
+        self.__gap = WinUtils.hprct(0.05)
         self.__running = True
         self.pick_images()
 
