@@ -10,6 +10,7 @@ import pygame
 from components.simple_slider import SimpleSlider
 from components.text_message import TextMessage
 from components.diaporama import Diaporama
+from components.fiebooth_logo import FieboothLogo, LogoColorMode
 from config import config
 import random as rd
 from assets.assets import get_asset_uri
@@ -68,17 +69,18 @@ class DiaporamaView(StateView):
                                             y = WinUtils.hprct(0.053),
                                             center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.06))
         self.__wifi_text = TextMessage(self._window, "1) Se connecter au WIFI Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.1),
-                                            y = WinUtils.hprct(0.17),
-                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+                                            x = WinUtils.wprct(0.25),
+                                            y = WinUtils.hprct(0.19), center_gravity=True,
+                                            font_size=WinUtils.hprct(0.04))
         self.__wifi_qr = FiQrcode(self._window, QrType.WIFI, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.37),
                                   h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
         self.__url_text = TextMessage(self._window, "2) Accéder au portail Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.1),
-                                            y = WinUtils.hprct(0.52),
-                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+                                            x = WinUtils.wprct(0.25),
+                                            y = WinUtils.hprct(0.54), center_gravity=True,
+                                            font_size=WinUtils.hprct(0.04))
         self.__url_qr = FiQrcode(self._window, QrType.URL, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.72),
                                  h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
+        self.__logo = FieboothLogo(self._window)
     
     def __draw_wifi_qrcode(self):
         self.__wifi_text.setup()
@@ -98,6 +100,7 @@ class DiaporamaView(StateView):
         self._window.fill(FiColor.BACK)
         pygame.draw.rect(self._window, FiColor.SURFACE, (WinUtils.wprct(0.5), 0, 
                                                          WinUtils.wprct(0.5), WinUtils.hprct(1)))
+    
 
     def setup(self):
         self.__draw_background()
@@ -106,8 +109,8 @@ class DiaporamaView(StateView):
         self.__draw_wifi_qrcode()
         self.__draw_url_qrcode()
         self.__diaporama.setup()
+        self.__logo.setup()
         self.__transform.setup(self.__diaporama)
-        
         
     def destroy(self) -> None:
         super().destroy()
