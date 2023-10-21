@@ -2,6 +2,7 @@ import pygame
 from .component_base import ComponentBase
 from utils.win_utils import CenterMode, WinUtils
 from pygame import gfxdraw
+from utils.colors_utils import FiColor
 
 class SimpleSlider(ComponentBase):
     def __init__(self, windows_context, x, y, center_x : CenterMode = None,
@@ -53,14 +54,14 @@ class SimpleSlider(ComponentBase):
 
     def setup(self):
         
-        pygame.draw.rect(self._window, (170,170,170), (self.__x, self.__y, self.__width, self.__height))
+        pygame.draw.rect(self._window, FiColor.BACK, (self.__x, self.__y, self.__width, self.__height))
 
         cursor_circle = (self.__x + self.__width // 2,
                     int(self.__y + (self.__max - self.__value) / (self.__max - self.__min) * self.__height))
         bound_circle_top = (self.__x + self.__width // 2, self.__y)
         bound_circle_bottom = (self.__x + self.__width // 2,self.__y + self.__height)
 
-        gfxdraw.filled_circle(self._window, *bound_circle_top, self.__width//2, (170,170,170))
-        gfxdraw.filled_circle(self._window, *bound_circle_bottom, self.__width//2, (170,170,170))
+        gfxdraw.filled_circle(self._window, *bound_circle_top, self.__width//2, FiColor.BACK)
+        gfxdraw.filled_circle(self._window, *bound_circle_bottom, self.__width//2, FiColor.BACK)
         gfxdraw.filled_circle(self._window, *cursor_circle, self.__cursor_radius, self.__cursor_color)
         

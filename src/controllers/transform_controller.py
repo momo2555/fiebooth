@@ -56,7 +56,7 @@ class TransformController():
     
     def __draw_background(self):
         background = pygame.Surface(WinUtils.get_screen_size(), pygame.SRCALPHA)   # per-pixel alpha
-        background.fill((220,220,220,170))                         # notice the alpha value in the color
+        background.fill((250,250,250,210))                         # notice the alpha value in the color
         self.__window.blit(background, (0,0))
 
     def contrast_up(self):

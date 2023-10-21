@@ -93,9 +93,14 @@ class DiaporamaView(StateView):
         (x, y) = (WinUtils.wprct(0.05), WinUtils.hprct(0.05))
         pygame.draw.rect(self._window, FiColor.HIGHLIGHT, pygame.Rect(x, y, w, h),  int(h/2), int(h/2))
         self.__images_counter_text.setup()
-        
-    def setup(self):
+    
+    def __draw_background(self):
         self._window.fill(FiColor.BACK)
+        pygame.draw.rect(self._window, FiColor.SURFACE, (WinUtils.wprct(0.5), 0, 
+                                                         WinUtils.wprct(0.5), WinUtils.hprct(1)))
+
+    def setup(self):
+        self.__draw_background()
         self.__draw_photos_length()
         self.__buttons_controller.setup()
         self.__draw_wifi_qrcode()
