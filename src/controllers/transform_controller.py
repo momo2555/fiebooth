@@ -2,6 +2,7 @@ from components.simple_slider import SimpleSlider
 from utils.win_utils import WinUtils, CenterMode
 from utils.image_utils import ImageUtils
 from config import config, Config
+from components.diaporama import Diaporama
 import pygame
 import time
 
@@ -27,17 +28,22 @@ class TransformController():
         self.__show_bright = False
         self.__timer = 0
     
-    def setup(self):
+    def setup(self, diaporama : Diaporama = None):
         if (self.__show_bright or self.__show_contr):
+            if diaporama is not None:
+                diaporama.pause()
             self.__draw_background()
             self.__window.blit(self.__tf, 
                             WinUtils.get_center_position(WinUtils.wprct(0.5), WinUtils.hprct(0.5)))
+
         if (self.__show_contr):self.__contr_slider.setup()
         if (self.__show_bright):self.__bright_slider.setup()
         
         if (time.time() - self.__timer > 2):
             self.__show_contr = False
             self.__show_bright = False
+            if diaporama is not None:
+                diaporama.play()
 
     def __update_transform(self):
         config["contrast"] = self.__contr_value

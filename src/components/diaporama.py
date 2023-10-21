@@ -10,13 +10,16 @@ import os
 class Diaporama(ComponentBase):
     MAX_FRAME = 3
 
-    def __init__(self, window_context, w, h, x, speed : int = 7):
+    def __init__(self, window_context, w, h, x, speed : int = 4):
         super().__init__(window_context)
         self.__w = w
         self.__h = h
         self.__x = x
         self.__images = []
         self.__speed = speed
+        self.__gap = WinUtils.hprct(0.08)
+        self.__running = True
+        self.pick_images()
 
 
     def pick_images(self):
@@ -25,15 +28,16 @@ class Diaporama(ComponentBase):
 
         for im in self.__images:
             if im["path"] in self.__photos:
-                self.__possibilities.remove(im)
-        length = len(self.__possibilities)
+                self.__possibilities.remove(im["path"])
+        
 
         # delete the last image
         if self.__img_len() > 0:
             self.__images.pop()
 
+        length = len(self.__possibilities)
         # add new image
-        while self.__img_len() <= self.MAX_FRAME:
+        while self.__img_len() < self.MAX_FRAME:
             error = False
             current_photo = self.__possibilities[rd.randint(0, length - 1)]
             try:
@@ -47,7 +51,7 @@ class Diaporama(ComponentBase):
                 )
                 error = True
             if not error:
-                y = -self.__h + int((self.MAX_FRAME - self.__img_len()) * self.__h * 1.08)
+                y = -self.__h + int((self.MAX_FRAME - 1 - self.__img_len()) * self.__h * (1+self.__gap))
                 self.__images.insert(
                 0,
                 {
@@ -57,18 +61,26 @@ class Diaporama(ComponentBase):
                 },
                 )
             self.__possibilities.remove(current_photo)
+            length = len(self.__possibilities)
 
     def __img_len(self) -> int:
         return len(self.__images)
     
     def __is_outside_bounds(self, img_obj) -> bool:
-        return img_obj["pos"][1] > WinUtils.hprct(1)
+        return img_obj["pos"][1] > self.__gap
+
+    def pause(self):
+        self.__running = False
+    
+    def play(self):
+        self.__running = True
 
     def setup(self):
         for im in self.__images:
             pos = (im["pos"][0], im["pos"][1])
             self._window.blit(im["data"], pos)
-            im["pos"][1] = (im["pos"][1] + self.__speed)
+            if self.__running:
+                im["pos"][1] = (im["pos"][1] + self.__speed)
         
-        if self.__is_outside_bounds(self.__images[-1]):
+        if self.__is_outside_bounds(self.__images[0]):
             self.pick_images()
