@@ -4,6 +4,7 @@ from assets.assets import get_asset_uri
 import pygame
 from utils.win_utils import WinUtils
 
+
 class LogoColorMode(Enum):
     LIGHT = 0
     DARK = 1
@@ -22,8 +23,5 @@ class FieboothLogo(ComponentBase):
 
         self.__img = pygame.transform.scale(self.__img, (self.__reduced_size[0], self.__reduced_size[1]))
 
-        
-       
-    
     def setup(self):
         self._window.blit(self.__img, (WinUtils.wprct(0.02), WinUtils.hprct(0.98) - self.__reduced_size[1]))
