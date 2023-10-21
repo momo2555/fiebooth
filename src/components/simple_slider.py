@@ -35,17 +35,32 @@ class SimpleSlider(ComponentBase):
         elif self.__center_y == CenterMode.BOTTOM:
             self.__y = screen_size[1] - self.__y  - self.__height
 
-    def set_value(self, value): 
-        self.__value = value
-    def get_value(self):
+    def set_value(self, value) -> int: 
+        if value <= self.__max and value >= self.__min:
+            self.__value = value
         return self.__value
+
+    def get_value(self) -> int:
+        return self.__value
+    
+    def plus(self) -> int:
+        return self.set_value(self.__value+1)
+        
+
+    def minus(self) -> int:
+        return self.set_value(self.__value-1)
+        
 
     def setup(self):
         
         pygame.draw.rect(self._window, (170,170,170), (self.__x, self.__y, self.__width, self.__height))
 
-        circle = (self.__x + self.__width // 2,
+        cursor_circle = (self.__x + self.__width // 2,
                     int(self.__y + (self.__max - self.__value) / (self.__max - self.__min) * self.__height))
+        bound_circle_top = (self.__x + self.__width // 2, self.__y)
+        bound_circle_bottom = (self.__x + self.__width // 2,self.__y + self.__height)
 
-        gfxdraw.filled_circle(self._window, *circle, self.__cursor_radius, self.__cursor_color)
-        gfxdraw.aacircle(self._window, *circle, self.__cursor_radius, self.__cursor_color)
+        gfxdraw.filled_circle(self._window, *bound_circle_top, self.__width//2, (170,170,170))
+        gfxdraw.filled_circle(self._window, *bound_circle_bottom, self.__width//2, (170,170,170))
+        gfxdraw.filled_circle(self._window, *cursor_circle, self.__cursor_radius, self.__cursor_color)
+        

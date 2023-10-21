@@ -12,14 +12,14 @@ class TransformController():
         self.__preview = None
         self.__contr_value = config.contrast
         self.__bright_value = config.brightness
-        self.__contr_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.wprct(0.1),
+        self.__contr_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.hprct(0.1),
                                            width=WinUtils.wprct(0.04), center_y=CenterMode.CENTER,
                                            cursor_radius=WinUtils.wprct(0.03), cursor_color=(255, 0, 0),
-                                           height=WinUtils.wprct(0.6), value=self.__contr_value)
-        self.__bright_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.wprct(0.1),
+                                           height=WinUtils.hprct(0.75), value=self.__contr_value)
+        self.__bright_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.hprct(0.1),
                                            width=WinUtils.wprct(0.04), center_y=CenterMode.CENTER,
                                            cursor_radius=WinUtils.wprct(0.03), cursor_color=(0, 255, 0),
-                                           center_x=CenterMode.RIGHT, height=WinUtils.wprct(0.6),
+                                           center_x=CenterMode.RIGHT, height=WinUtils.hprct(0.75),
                                            value=self.__bright_value)
         self.__tf_path = preview_path
         self.__update_transform()
@@ -60,29 +60,25 @@ class TransformController():
         self.__window.blit(background, (0,0))
 
     def contrast_up(self):
-        self.__contr_value+=1
-        self.__contr_slider.set_value(self.__contr_value)
+        self.__contr_value=self.__contr_slider.plus()
         self.__timer = time.time()
         self.__show_contr = True
         self.__update_transform()
 
     def contrast_down(self):
-        self.__contr_value-=1
-        self.__contr_slider.set_value(self.__contr_value)
+        self.__contr_value=self.__contr_slider.minus()
         self.__timer = time.time()
         self.__show_contr = True
         self.__update_transform()
 
     def brightness_up(self):
-        self.__bright_value+=1
-        self.__bright_slider.set_value(self.__bright_value)
+        self.__bright_value= self.__bright_slider.plus()
         self.__timer = time.time()
         self.__show_bright = True
         self.__update_transform()
 
     def brightness_down(self):
-        self.__bright_value-=1
-        self.__bright_slider.set_value(self.__bright_value)
+        self.__bright_value= self.__bright_slider.minus()
         self.__timer = time.time()
         self.__show_bright = True
         self.__update_transform()
