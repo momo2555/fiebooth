@@ -11,6 +11,7 @@ from components.simple_slider import SimpleSlider
 from components.text_message import TextMessage
 from components.diaporama import Diaporama
 from components.fiebooth_logo import FieboothLogo, LogoColorMode
+from components.counter import FiCounter, CounterType
 from config import config
 import random as rd
 from assets.assets import get_asset_uri
@@ -62,25 +63,29 @@ class DiaporamaView(StateView):
         self.__init_buttons_events()
         self.__choose_photo()
         self.__transform = TransformController(self._window, self.__current_photo)
+        self.__images_counter = FiCounter(self._window, CounterType.PHOTOS, 
+                                          x=WinUtils.wprct(0.05), y=WinUtils.hprct(0.05),
+                                          w=WinUtils.wprct(0.13), h=WinUtils.hprct(0.08))
+        self.__prints_counter = FiCounter(self._window, CounterType.PRINTS, 
+                                          x=WinUtils.wprct(0.32), y=WinUtils.hprct(0.05),
+                                          w=WinUtils.wprct(0.13), h=WinUtils.hprct(0.08))
         self.__diaporama = Diaporama(self._window, w=WinUtils.wprct(0.4), h=WinUtils.hprct(0.4),
                                      x=WinUtils.wprct(0.55))
-        self.__images_counter_text = TextMessage(self._window, f"{config.user_photos_len}", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.07),
-                                            y = WinUtils.hprct(0.053),
-                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.06))
+       
         self.__wifi_text = TextMessage(self._window, "1) Se connecter au WIFI Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.25),
-                                            y = WinUtils.hprct(0.19), center_gravity=True,
+                                            x = WinUtils.wprct(0.25), center_gravity_x=True,
+                                            y = WinUtils.hprct(0.19), center_gravity_y=True,
                                             font_size=WinUtils.hprct(0.04))
         self.__wifi_qr = FiQrcode(self._window, QrType.WIFI, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.37),
                                   h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
         self.__url_text = TextMessage(self._window, "2) Accéder au portail Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.25),
-                                            y = WinUtils.hprct(0.54), center_gravity=True,
+                                            x = WinUtils.wprct(0.25), center_gravity_x=True,
+                                            y = WinUtils.hprct(0.54), center_gravity_y=True,
                                             font_size=WinUtils.hprct(0.04))
         self.__url_qr = FiQrcode(self._window, QrType.URL, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.72),
                                  h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
         self.__logo = FieboothLogo(self._window)
+        
     
     def __draw_wifi_qrcode(self):
         self.__wifi_text.setup()
@@ -89,22 +94,17 @@ class DiaporamaView(StateView):
     def __draw_url_qrcode(self):
         self.__url_qr.setup()
         self.__url_text.setup()
-        
-    def __draw_photos_length(self):
-        (w, h) = (WinUtils.wprct(0.13), WinUtils.hprct(0.08))
-        (x, y) = (WinUtils.wprct(0.05), WinUtils.hprct(0.05))
-        pygame.draw.rect(self._window, FiColor.HIGHLIGHT, pygame.Rect(x, y, w, h),  int(h/2), int(h/2))
-        self.__images_counter_text.setup()
     
     def __draw_background(self):
         self._window.fill(FiColor.BACK)
         pygame.draw.rect(self._window, FiColor.SURFACE, (WinUtils.wprct(0.5), 0, 
                                                          WinUtils.wprct(0.5), WinUtils.hprct(1)))
-    
 
     def setup(self):
         self.__draw_background()
-        self.__draw_photos_length()
+        # self.__draw_photos_length()
+        self.__images_counter.setup()
+        self.__prints_counter.setup()
         self.__buttons_controller.setup()
         self.__draw_wifi_qrcode()
         self.__draw_url_qrcode()
