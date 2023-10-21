@@ -4,3 +4,5 @@ class FiColor:
     WHITE = (255, 255, 255)
     DARK = (20, 20, 20)
     SURFACE = (141, 149, 154)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)

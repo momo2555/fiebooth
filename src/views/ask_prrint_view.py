@@ -4,8 +4,10 @@ from controllers.test_printer import TestPrinter
 from components.photo_preview import PhotoPreview
 from components.text_message import TextMessage
 from components.fiebooth_logo import LogoColorMode, FieboothLogo
-from utils.win_utils import CenterMode
+from utils.win_utils import CenterMode, WinUtils
+from utils.colors_utils import FiColor
 from config import config
+from pygame import gfxdraw
 import pygame
 import time
 
@@ -48,9 +50,28 @@ class AskPrintView(StateView):
                                             center_x=CenterMode.CENTER, font_size=100,
                                             center_y=CenterMode.BOTTOM, y = 100)
         self.__logo = FieboothLogo(self._window, LogoColorMode.DARK)
+        self.__yes = TextMessage(self._window, "OUI", color=FiColor.WHITE,
+                                 font_size=100, x=WinUtils.wprct(0.1125), center_gravity_x=True,
+                                 center_y=CenterMode.CENTER,)
+        self.__no = TextMessage(self._window, "NON", color=FiColor.WHITE,
+                                 font_size=100, x=WinUtils.wprct(0.8875), center_gravity_x=True,
+                                 center_y=CenterMode.CENTER,)
+    
+    def __draw_yes_no_indicators(self):
+        yes_circle = (WinUtils.wprct(0.1125), WinUtils.hprct(0.5))
+        no_circle = (WinUtils.wprct(0.8875), WinUtils.hprct(0.5))
+
+        gfxdraw.filled_circle(self._window, *no_circle, WinUtils.wprct(0.07), FiColor.RED)
+        gfxdraw.filled_circle(self._window, *yes_circle, WinUtils.wprct(0.07), FiColor.GREEN)
+
+        self.__yes.setup()
+        self.__no.setup()
+
     def setup(self):
         self._window.fill((255, 255, 255))
         self.__logo.setup()
+
+        self.__draw_yes_no_indicators()
         self.__buttons_controller.setup()
         if self.__photo_name != None:
             self.__preview.setup()

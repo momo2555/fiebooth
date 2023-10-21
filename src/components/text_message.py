@@ -6,7 +6,8 @@ import pygame
 class TextMessage(ComponentBase):
     def __init__(self, window_context, text, x = 0, y = 0, 
                  center_x = None, center_y = None, 
-                 color = (0,0,0), font_size = 30, center_gravity:bool=False):
+                 color = (0,0,0), font_size = 30,
+                 center_gravity_x:bool=False, center_gravity_y:bool=False):
         ComponentBase.__init__(self, window_context)
         self.__text = text
         self.__font = pygame.font.Font(get_asset_uri("BradBunR.ttf"), font_size)
@@ -15,7 +16,8 @@ class TextMessage(ComponentBase):
         self.__y = y
         self.__center_x = center_x
         self.__center_y = center_y
-        self.__center_gravity = center_gravity
+        self.__center_gravity_x = center_gravity_x
+        self.__center_gravity_y = center_gravity_y
         self.__figure_position()
 
     def get_render_size(self):
@@ -39,8 +41,9 @@ class TextMessage(ComponentBase):
             self.__y = screen_size[1] - self.__y  - temp_size[1]
             gravity_sign[1] = -1
 
-        if self.__center_gravity:
+        if self.__center_gravity_x:
             self.__x -= gravity_sign[0]*temp_size[0] //2
+        if self.__center_gravity_y:
             self.__y -= gravity_sign[1]*temp_size[1] //2
 
     def setup(self) -> None:
