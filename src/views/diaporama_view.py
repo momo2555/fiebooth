@@ -86,6 +86,18 @@ class DiaporamaView(StateView):
                                             x = WinUtils.wprct(0.07),
                                             y = WinUtils.hprct(0.053),
                                             center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.06))
+        self.__wifi_text = TextMessage(self._window, "1) Se connecter au WIFI Fiebooth", color=FiColor.WHITE,
+                                            x = WinUtils.wprct(0.1),
+                                            y = WinUtils.hprct(0.17),
+                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+        self.__wifi_qr = FiQrcode(self._window, QrType.WIFI, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.37),
+                                  h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
+        self.__url_text = TextMessage(self._window, "2) Accéder au portail Fiebooth", color=FiColor.WHITE,
+                                            x = WinUtils.wprct(0.1),
+                                            y = WinUtils.hprct(0.52),
+                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
+        self.__url_qr = FiQrcode(self._window, QrType.URL, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.72),
+                                 h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
         
         self.__photo_pos = [WinUtils.wprct(0.5), WinUtils.hprct(0.275)]
         self.__speed = 9
@@ -99,22 +111,12 @@ class DiaporamaView(StateView):
     
     def __draw_wifi_qrcode(self):
         
-        self.__wifi_text = TextMessage(self._window, "1) Se connecter au WIFI Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.1),
-                                            y = WinUtils.hprct(0.17),
-                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
-        self.__wifi_qr = FiQrcode(self._window, QrType.WIFI, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.37),
-                                  h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
+        
         self.__wifi_text.setup()
         self.__wifi_qr.setup()   
 
     def __draw_url_qrcode(self):
-        self.__url_text = TextMessage(self._window, "2) Accéder au portail Fiebooth", color=FiColor.WHITE,
-                                            x = WinUtils.wprct(0.1),
-                                            y = WinUtils.hprct(0.52),
-                                            center_y=CenterMode.TOP, font_size=WinUtils.hprct(0.04))
-        self.__url_qr = FiQrcode(self._window, QrType.URL, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.72),
-                                 h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
+        
         self.__url_qr.setup()
         self.__url_text.setup()
         

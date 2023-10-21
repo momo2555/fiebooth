@@ -46,6 +46,9 @@ class FiQrcode(ComponentBase):
         qr.make(fit=True)
         img = qr.make_image(fill_color=FiColor.DARK, back_color=FiColor.WHITE)
         img.save(self.__img_path)
+        
+        py_img = pygame.image.load(self.__img_path).convert()
+        self.__py_img = pygame.transform.scale(py_img, (self.__w, self.__h))
 
     def set_x(self, value):
         self.__x = value
@@ -54,13 +57,12 @@ class FiQrcode(ComponentBase):
         self.__y = value
 
     def setup(self) -> None:
+        #draw the surarounded sqaure
         (sw, sh) = (int(self.__w*1.08), int(self.__h*1.08))
         (sx, sy) = (self.__x - int(sw/2), self.__y - int(sh/2))
-        
         pygame.draw.rect(self._window, FiColor.WHITE, pygame.Rect(sx, sy, sw, sh),  int(sh/2), 30)
         
-        py_img = pygame.image.load(self.__img_path).convert()
+        #draw the qrcode
         (w, h) = (self.__w, self.__h)
         (x, y) = (self.__x - int(w/2), self.__y - int(h/2))
-        py_img = pygame.transform.scale(py_img, (w, h))
-        self._window.blit(py_img, (x, y))
+        self._window.blit(self.__py_img, (x, y))
