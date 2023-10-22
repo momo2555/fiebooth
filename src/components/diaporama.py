@@ -51,7 +51,7 @@ class Diaporama(ComponentBase):
                 )
                 error = True
             if not error:
-                y = -self.__h + int((self.MAX_FRAME - 1 - self.__img_len()) * self.__h * (1+self.__gap))
+                y = -self.__h + int((self.MAX_FRAME - 1 - self.__img_len()) * (self.__h + self.__gap))
                 self.__images.insert(
                 0,
                 {
