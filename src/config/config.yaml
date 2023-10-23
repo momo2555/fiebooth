@@ -16,9 +16,9 @@ total_prints_len: 0
 api_enable: true
 use_keyboard: true
 green_btn: 26
-red_btn: 0
-yellow_btn: 0
-blue_btn: 0
+red_btn: 19
+yellow_btn: 13
+blue_btn: 6
 contrast: 0
 brightness: 0
 contrast_default: -2
