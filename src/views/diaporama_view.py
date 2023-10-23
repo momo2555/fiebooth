@@ -84,6 +84,10 @@ class DiaporamaView(StateView):
                                             font_size=WinUtils.hprct(0.04))
         self.__url_qr = FiQrcode(self._window, QrType.URL, x=WinUtils.wprct(0.25), y=WinUtils.hprct(0.72),
                                  h=WinUtils.hprct(0.25), w=WinUtils.hprct(0.25))
+        self.__user_text =  TextMessage(self._window, f"{config.user_name}", color=FiColor.WHITE,
+                                        x = WinUtils.wprct(0.52), center_x=CenterMode.RIGHT,
+                                        y = WinUtils.hprct(0.02), center_y=CenterMode.BOTTOM,
+                                        font_size=WinUtils.hprct(0.04))
         self.__logo = FieboothLogo(self._window)
         
     
@@ -110,6 +114,7 @@ class DiaporamaView(StateView):
         self.__draw_url_qrcode()
         self.__diaporama.setup()
         self.__logo.setup()
+        self.__user_text.setup()
         self.__transform.setup(self.__diaporama)
         
     def destroy(self) -> None:
