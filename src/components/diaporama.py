@@ -2,6 +2,7 @@ from .component_base import ComponentBase
 from utils.image_utils import ImageUtils
 from utils.win_utils import WinUtils
 from config import config
+from assets.assets import get_asset_uri
 import random as rd
 import pygame
 import os
@@ -39,7 +40,10 @@ class Diaporama(ComponentBase):
         # add new image
         while self.__img_len() < self.MAX_FRAME:
             error = False
-            current_photo = self.__possibilities[rd.randint(0, length - 1)]
+            if length > 0:
+                current_photo = self.__possibilities[rd.randint(0, length - 1)]
+            else:
+                current_photo = get_asset_uri("accueil.jpg")
             try:
                 if os.path.exists(current_photo):
                     img = pygame.image.load(current_photo).convert()
@@ -60,7 +64,7 @@ class Diaporama(ComponentBase):
                     "data": pygame.transform.scale(img, (self.__w, self.__h)),
                 },
                 )
-            self.__possibilities.remove(current_photo)
+            self.__remove_possibility(current_photo)
             length = len(self.__possibilities)
 
     def __img_len(self) -> int:
@@ -69,6 +73,11 @@ class Diaporama(ComponentBase):
     def __is_outside_bounds(self, img_obj) -> bool:
         return img_obj["pos"][1] > self.__gap
 
+    def __remove_possibility(self, photo):
+        try:
+            self.__possibilities.remove(photo)
+        except ValueError as e:
+            self._logger.warning(f"can't remove {photo}, it'is not a possibility.")
     def pause(self):
         self.__running = False
     
