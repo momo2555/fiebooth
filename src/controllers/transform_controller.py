@@ -1,8 +1,10 @@
 from components.simple_slider import SimpleSlider
 from utils.win_utils import WinUtils, CenterMode
 from utils.image_utils import ImageUtils
+from utils.colors_utils import FiColor
 from config import config, Config
 from components.diaporama import Diaporama
+from components.text_message import TextMessage
 import pygame
 import time
 
@@ -21,6 +23,10 @@ class TransformController():
                                            cursor_radius=WinUtils.wprct(0.03), cursor_color=(0, 255, 0),
                                            center_x=CenterMode.RIGHT, height=WinUtils.hprct(0.75),
                                            value=self.__bright_value)
+        self.__transform_text =  TextMessage(self.__window, f" ", color=FiColor.DARK,
+                                        center_x=CenterMode.CENTER,
+                                        y = WinUtils.hprct(0.1125), center_y=CenterMode.BOTTOM, center_gravity_y=True,
+                                        font_size=WinUtils.hprct(0.1))
         self.__tf_path = preview_path
         self.__update_transform()
         
@@ -35,6 +41,7 @@ class TransformController():
             self.__draw_background()
             self.__window.blit(self.__tf, 
                             WinUtils.get_center_position(WinUtils.wprct(0.5), WinUtils.hprct(0.5)))
+            self.__transform_text.setup()
 
         if (self.__show_contr):self.__contr_slider.setup()
         if (self.__show_bright):self.__bright_slider.setup()
@@ -44,6 +51,7 @@ class TransformController():
             self.__show_bright = False
             if diaporama is not None:
                 diaporama.play()
+        
 
     def __update_transform(self):
         config["contrast"] = self.__contr_value
@@ -63,22 +71,26 @@ class TransformController():
         self.__contr_value=self.__contr_slider.plus()
         self.__timer = time.time()
         self.__show_contr = True
+        self.__transform_text.set_text("Contraste")
         self.__update_transform()
 
     def contrast_down(self):
         self.__contr_value=self.__contr_slider.minus()
         self.__timer = time.time()
         self.__show_contr = True
+        self.__transform_text.set_text("Contraste")
         self.__update_transform()
 
     def brightness_up(self):
         self.__bright_value= self.__bright_slider.plus()
         self.__timer = time.time()
         self.__show_bright = True
+        self.__transform_text.set_text("Luminosité")
         self.__update_transform()
 
     def brightness_down(self):
         self.__bright_value= self.__bright_slider.minus()
         self.__timer = time.time()
         self.__show_bright = True
+        self.__transform_text.set_text("Luminosité")
         self.__update_transform()

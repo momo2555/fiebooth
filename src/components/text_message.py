@@ -14,6 +14,8 @@ class TextMessage(ComponentBase):
         self.__color = color
         self.__x = x
         self.__y = y
+        self.__pre_x = x
+        self.__pre_y = y
         self.__center_x = center_x
         self.__center_y = center_y
         self.__center_gravity_x = center_gravity_x
@@ -32,13 +34,13 @@ class TextMessage(ComponentBase):
         if self.__center_x == CenterMode.CENTER:
             self.__x = center_pos[0]
         elif self.__center_x == CenterMode.RIGHT:
-            self.__x = screen_size[0] - self.__x - temp_size[0]
+            self.__x = screen_size[0] - self.__pre_x - temp_size[0]
             gravity_sign[0] = -1
         # Y position
         if self.__center_y == CenterMode.CENTER:
             self.__y = center_pos[1]
         elif self.__center_y == CenterMode.BOTTOM:
-            self.__y = screen_size[1] - self.__y  - temp_size[1]
+            self.__y = screen_size[1] - self.__pre_y  - temp_size[1]
             gravity_sign[1] = -1
 
         if self.__center_gravity_x:
@@ -53,3 +55,4 @@ class TextMessage(ComponentBase):
 
     def set_text(self, text : str) -> None:
         self.__text = text
+        self.__figure_position()
