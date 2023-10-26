@@ -3,6 +3,7 @@ from assets.assets import get_asset_uri
 from controllers.cameraController import CameraController
 from utils.camera_utils import CameraUtils
 from utils.win_utils import CenterMode
+from utils.colors_utils import FiColor
 from controllers.test_printer import TestPrinter
 from components.text_message import TextMessage
 import time
@@ -30,12 +31,12 @@ class PrintingView(StateView):
         self.__timer = time.time()
         self.__printing_text = TextMessage(self._window, "Printing ... ",
                                             center_x=CenterMode.CENTER, font_size=400,
-                                            center_y=CenterMode.CENTER, color=(201, 134, 213))
+                                            center_y=CenterMode.CENTER, color=FiColor.WHITE)
         
         
 
     def setup(self):
-        self._window.fill((255, 255, 255))
+        self._window.fill(FiColor.SURFACE)
         self.__printing_text.setup()
         if self.__i == 2:
             if not self.__printer_in_trouble:
