@@ -3,6 +3,9 @@ if [ $# -ne 2 ]; then
     echo "Usage: $0 <input_file> <replacement>"
     exit 1
 fi
+sudo rfkill unblock wifi
+sleep 1
+
 
 # define ssid and pka
 SSID=$1

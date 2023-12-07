@@ -56,7 +56,7 @@ ln -s "$HOME/.pyenv/versions/fiebooth/bin/python" env/python
 #echo "Install infra, setup DNS and wifi Accsess Point ..."
 SSID="fiebooth-$(openssl rand -hex 2)"
 echo "$SSID" > /fiebooth/config/.ssid
-#sudo apt install -y hostapd dnsmasq
+#sudo apt install -y dnsmasq
 sudo cp scripts/files/hostapd.conf /etc/hostapd/hostapd.conf
 sudo sed -i -e "s/_ssid_/$SSID/g" /etc/hostapd/hostapd.conf
 #sudo cp scripts/files/hostapd /etc/default/hostapd #fin du fichier

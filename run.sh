@@ -1,4 +1,6 @@
 #!/bin/bash
+#disable wifi
+sudo ifconfig wlan0 up 
 
 # Run Fiebooth 
 cd /fiebooth/fiebooth
@@ -7,7 +9,7 @@ source ~/.bashrc
 export "XAUTHORITY=$HOME/.Xauthority"
 export "PYTHONPATH=$PYTHONPATH:/fiebooth/env/site-packages"
 export XDG_RUNTIME_DIR=/run/user/$(id -u)
-DISPLAY=:0 XAUTHORITY=$XAUTHORITY /fiebooth/env/python main.py &
+DISPLAY=:0 XAUTHORITY=$XAUTHORITY python main.py &
 cd ..
 
 # Run Portail
