@@ -1,13 +1,14 @@
 import RPi.GPIO as gpio
 import time
 import logging
+from config import config
 
 class FlashController:
 
     def __init__(self):
         self.logger = logging.getLogger("fiebooth")
         gpio.setmode(gpio.BCM)
-        gpio.setup(4, gpio.OUT)
+        gpio.setup(config.flash_pin, gpio.OUT)
 
     def flash_on(self):
         self.logger.info(f"Flash ON")
