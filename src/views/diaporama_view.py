@@ -37,6 +37,7 @@ class DiaporamaView(StateView):
         self.__buttons_controller.add_button(4, self.__config_brightness_down, key=pygame.K_LEFT)
 
     def __trigger_shot_callback(self, e):
+        self._logger.info("Shot button triggered !")
         self._go_next_state()
 
     def __config_contrast_up(self, e):

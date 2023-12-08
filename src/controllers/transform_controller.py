@@ -16,17 +16,34 @@ class TransformController():
         self.__bright_value = config.brightness
         self.__contr_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.hprct(0.1),
                                            width=WinUtils.wprct(0.04), center_y=CenterMode.CENTER,
-                                           cursor_radius=WinUtils.wprct(0.03), cursor_color=(255, 0, 0),
+                                           cursor_radius=WinUtils.wprct(0.03), cursor_color=FiColor.BLUE,
                                            height=WinUtils.hprct(0.75), value=self.__contr_value)
         self.__bright_slider = SimpleSlider(self.__window, x = WinUtils.wprct(0.1), y = WinUtils.hprct(0.1),
                                            width=WinUtils.wprct(0.04), center_y=CenterMode.CENTER,
-                                           cursor_radius=WinUtils.wprct(0.03), cursor_color=(0, 255, 0),
+                                           cursor_radius=WinUtils.wprct(0.03), cursor_color=FiColor.YELLOW,
                                            center_x=CenterMode.RIGHT, height=WinUtils.hprct(0.75),
                                            value=self.__bright_value)
         self.__transform_text =  TextMessage(self.__window, f" ", color=FiColor.DARK,
                                         center_x=CenterMode.CENTER,
                                         y = WinUtils.hprct(0.1125), center_y=CenterMode.BOTTOM, center_gravity_y=True,
                                         font_size=WinUtils.hprct(0.1))
+        self.__plus_contr =  TextMessage(self.__window, f"+", color=FiColor.GREEN,
+                                        x=WinUtils.wprct(0.12), center_gravity_x=True,
+                                        y=WinUtils.hprct(0.05), center_gravity_y=True,
+                                        font_size=WinUtils.hprct(0.15))
+        self.__plus_bright =  TextMessage(self.__window, f"+", color=FiColor.GREEN,
+                                        x=WinUtils.wprct(0.12), center_gravity_x=True, center_x=CenterMode.RIGHT,
+                                        y=WinUtils.hprct(0.05), center_gravity_y=True,
+                                        font_size=WinUtils.hprct(0.15))
+        self.__min_contr =  TextMessage(self.__window, f"-", color=FiColor.RED,
+                                        x=WinUtils.wprct(0.12), center_gravity_x=True,
+                                        y=WinUtils.hprct(0.05), center_gravity_y=True, center_y=CenterMode.BOTTOM,
+                                        font_size=WinUtils.hprct(0.15))
+        self.__min_bright =  TextMessage(self.__window, f"-", color=FiColor.RED,
+                                        x=WinUtils.wprct(0.12), center_gravity_x=True, center_x=CenterMode.RIGHT,
+                                        y=WinUtils.hprct(0.05), center_gravity_y=True, center_y=CenterMode.BOTTOM,
+                                        font_size=WinUtils.hprct(0.15))
+        
         self.__tf_path = preview_path
         self.__update_transform()
         
@@ -34,6 +51,14 @@ class TransformController():
         self.__show_bright = False
         self.__timer = 0
     
+    def __setup_contr_buttons(self):
+        self.__min_contr.setup()
+        self.__plus_contr.setup()
+    
+    def __setup_bright_buttons(self):
+        self.__min_bright.setup()
+        self.__plus_bright.setup()
+
     def setup(self, diaporama : Diaporama = None):
         if (self.__show_bright or self.__show_contr):
             if diaporama is not None:
@@ -43,8 +68,12 @@ class TransformController():
                             WinUtils.get_center_position(WinUtils.wprct(0.5), WinUtils.hprct(0.5)))
             self.__transform_text.setup()
 
-        if (self.__show_contr):self.__contr_slider.setup()
-        if (self.__show_bright):self.__bright_slider.setup()
+        if (self.__show_contr):
+            self.__contr_slider.setup()
+            self.__setup_contr_buttons()
+        if (self.__show_bright):
+            self.__bright_slider.setup()
+            self.__setup_bright_buttons()
         
         if (time.time() - self.__timer > 2):
             self.__show_contr = False

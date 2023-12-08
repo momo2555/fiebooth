@@ -6,3 +6,5 @@ class FiColor:
     SURFACE = (141, 149, 154)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
+    BLUE = (51, 204, 255)
+    YELLOW = (255, 204, 51)
