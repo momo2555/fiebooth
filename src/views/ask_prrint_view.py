@@ -12,17 +12,17 @@ import pygame
 import time
 
 class AskPrintView(StateView):
-    def __init__(self, state_controller, window_context):
+    def __init__(self, state_controller, window_context, button : ButtonsController):
         StateView.__init__(self, state_controller, window_context, "ask_print", "printing")
         self.__photo_name : str = None
-        self.__buttons_controller : ButtonsController = ButtonsController()
+        self.__buttons_controller : ButtonsController = button
         self.__preview : PhotoPreview = None 
         self.__print_text : TextMessage = None
         self.__timer : float = None
         
     
     def __init_buttons(self):
-        self.__buttons_controller = ButtonsController()
+        #self.__buttons_controller = ButtonsController()
         self.__buttons_controller.add_button(config.green_btn, self.__yes_print, key=pygame.K_y)
         self.__buttons_controller.add_button(config.red_btn, self.__no_print, key=pygame.K_n)
 

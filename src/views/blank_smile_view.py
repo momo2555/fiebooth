@@ -9,15 +9,15 @@ import time
 import pygame
 
 class BlankSmileView(StateView):
-    def __init__(self, state_controller, window_context, camera):
+    def __init__(self, state_controller, window_context, camera, flash : FlashController):
         StateView.__init__(self, state_controller, window_context, "blank_smile", "ask_print")
         self.__camera : CameraController = camera
-        self.__flash : FlashController = None
+        self.__flash : FlashController = flash
         self.__timer = 0
        
 
     def show(self):
-        self.__flash = FlashController()
+        #self.__flash = FlashController()
         self.__timer = time.time()
         self.__smile_text = TextMessage(self._window, "Smile :)",
                                             center_x=CenterMode.CENTER, font_size=400,
