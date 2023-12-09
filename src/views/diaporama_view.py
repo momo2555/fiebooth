@@ -1,6 +1,6 @@
 from .stateView import StateView
 from views.stateView import StateView
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from controllers.buttons_controller import ButtonsController
 from controllers.transform_controller import TransformController
 from utils.camera_utils import CameraUtils

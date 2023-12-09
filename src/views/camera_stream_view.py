@@ -1,5 +1,5 @@
 from views.stateView import StateView
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from controllers.buttons_controller import ButtonsController
 from utils.camera_utils import CameraUtils
 import pygame

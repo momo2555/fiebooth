@@ -1,6 +1,6 @@
 from .stateView import StateView
 from assets.assets import get_asset_uri
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from controllers.flash_controller import FlashController
 from utils.camera_utils import CameraUtils
 from utils.win_utils import CenterMode

@@ -1,6 +1,6 @@
 from .stateView import StateView
 from assets.assets import get_asset_uri
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from utils.camera_utils import CameraUtils
 from utils.win_utils import CenterMode
 from components.text_message import TextMessage
