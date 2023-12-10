@@ -46,13 +46,13 @@ class ButtonsController():
             gpio.setup(lock, gpio.IN, pull_up_down=gpio.PUD_UP)
             def button_lock_rise_cb(e):
                 with self.__thread_safe:
-                    if self.__pressed_lock is None:
-                        self.__pressed_lock  = lock
-                    else: self.__pressed_lock  = None
+                    #if self.__pressed_lock is None:
+                    self.__pressed_lock  = lock
+                    #else: self.__pressed_lock  = None
                 print(f"pressed lock = {self.__pressed_lock}")
                 self.logger.debug("Pressed lock")
             
-            gpio.add_event_detect(lock, gpio.BOTH, callback=button_lock_rise_cb, bouncetime=5)
+            gpio.add_event_detect(lock, gpio.RISING, callback=button_lock_rise_cb, bouncetime=5)
 
         
         self.__buttons[trigger].append(
@@ -85,6 +85,7 @@ class ButtonsController():
                         
                         event["callback"](None)
                 self.__pressed_trigger = None
+                self.__pressed_lock = None
 
     def __get_button(self, trigger):
         for button in self.__buttons:
