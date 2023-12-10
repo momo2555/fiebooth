@@ -75,7 +75,7 @@ class TransformController():
             self.__bright_slider.setup()
             self.__setup_bright_buttons()
         
-        if (time.time() - self.__timer > 2):
+        if (time.time() - self.__timer > 4):
             self.__show_contr = False
             self.__show_bright = False
             if diaporama is not None:
