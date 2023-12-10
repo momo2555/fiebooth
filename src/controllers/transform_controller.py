@@ -1,10 +1,11 @@
-from components.simple_slider import SimpleSlider
+from config import config, Config
 from utils.win_utils import WinUtils, CenterMode
 from utils.image_utils import ImageUtils
 from utils.colors_utils import FiColor
-from config import config, Config
 from components.diaporama import Diaporama
 from components.text_message import TextMessage
+from components.simple_slider import SimpleSlider
+from controllers.buttons_controller import ButtonsController
 import pygame
 import time
 
@@ -78,9 +79,8 @@ class TransformController():
         if (time.time() - self.__timer > 4):
             self.__show_contr = False
             self.__show_bright = False
-            if diaporama is not None:
+            if not diaporama is None:
                 diaporama.play()
-        
 
     def __update_transform(self):
         config["contrast"] = self.__contr_value

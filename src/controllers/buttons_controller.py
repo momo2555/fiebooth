@@ -15,6 +15,7 @@ class ButtonsController():
         self.__thread_safe = Lock()
         self.__use_keyboard = config.use_keyboard
         self.__pressed_lock = None
+        self.__lock_timer = time.time()
         self.__pressed_trigger = None
         gpio.setmode(gpio.BCM)
 
@@ -46,9 +47,8 @@ class ButtonsController():
             gpio.setup(lock, gpio.IN, pull_up_down=gpio.PUD_UP)
             def button_lock_rise_cb(e):
                 with self.__thread_safe:
-                    #if self.__pressed_lock is None:
                     self.__pressed_lock  = lock
-                    #else: self.__pressed_lock  = None
+                    self.__lock_timer = time.time()
                 print(f"pressed lock = {self.__pressed_lock}")
                 self.logger.debug("Pressed lock")
             
@@ -70,6 +70,7 @@ class ButtonsController():
         
 
     def setup(self):
+        # keyboard event
         if self.__use_keyboard:
             events = pygame.event.get()
             for event in events:
@@ -78,6 +79,7 @@ class ButtonsController():
                     for button in self.__buttons:
                         if button["key"] == event.key:
                             button["callback"](None)
+        # exec button event
         if self.__pressed_trigger is not None and self.__pressed_trigger in self.__buttons.keys():
             with self.__thread_safe:
                 for event in self.__buttons[self.__pressed_trigger]:
@@ -86,6 +88,11 @@ class ButtonsController():
                         event["callback"](None)
                 self.__pressed_trigger = None
                 self.__pressed_lock = None
+        # unlock after a timeout
+        if not self.__pressed_lock is None and time.time() - self.__lock_timer > 4:
+            with self.__thread_safe:
+                self.__pressed_lock = None
+
 
     def __get_button(self, trigger):
         for button in self.__buttons:
