@@ -1,6 +1,6 @@
 from .stateView import StateView
 from views.stateView import StateView
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from controllers.buttons_controller import ButtonsController
 from controllers.transform_controller import TransformController
 from utils.camera_utils import CameraUtils
@@ -20,21 +20,26 @@ from components.qrcode import FiQrcode, QrType
 
 
 class DiaporamaView(StateView):
-    def __init__(self, state_controller, window_context, camera):
+    def __init__(self, state_controller, window_context, camera, button : ButtonsController):
         StateView.__init__(self, state_controller, window_context, "diaporama", "countdown")
         self.__camera : CameraController = camera
-        self.__buttons_controller : ButtonsController = ButtonsController()
+        self.__buttons_controller : ButtonsController = button
         self.__photos = []
         self.__current_photo : str = None
         self.__transform : TransformController = None
 
     def __init_buttons_events(self):
-        self.__buttons_controller = ButtonsController()
+        #self.__buttons_controller = ButtonsController()
         self.__buttons_controller.add_button(config.green_btn, self.__trigger_shot_callback, key=pygame.K_a)
-        self.__buttons_controller.add_button(1, self.__config_contrast_up, key=pygame.K_UP)
-        self.__buttons_controller.add_button(2, self.__config_contrast_down, key=pygame.K_DOWN)
-        self.__buttons_controller.add_button(3, self.__config_brightness_up, key=pygame.K_RIGHT)
-        self.__buttons_controller.add_button(4, self.__config_brightness_down, key=pygame.K_LEFT)
+
+        self.__buttons_controller.add_button(config.green_btn, self.__config_contrast_up, 
+                                             key=pygame.K_UP, lock=config.blue_btn)
+        self.__buttons_controller.add_button(config.red_btn, self.__config_contrast_down, 
+                                             key=pygame.K_DOWN, lock=config.blue_btn)
+        self.__buttons_controller.add_button(config.green_btn, self.__config_brightness_up, 
+                                             key=pygame.K_RIGHT, lock=config.yellow_btn)
+        self.__buttons_controller.add_button(config.red_btn, self.__config_brightness_down, 
+                                             key=pygame.K_LEFT, lock=config.yellow_btn)
 
     def __trigger_shot_callback(self, e):
         self._logger.info("Shot button triggered !")

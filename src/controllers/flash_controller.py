@@ -20,5 +20,6 @@ class FlashController:
         gpio.output(4, gpio.LOW)
 
     def clean(self):
-        gpio.cleanup()
+        #gpio.cleanup()
+        pass
         

@@ -1,6 +1,6 @@
 import pygame
 from utils.file_utils import FileUtils
-from controllers.cameraController import CameraController
+from controllers.camera_controller import CameraController
 from config import config
 import logging
 import time

@@ -31,4 +31,12 @@ class CameraController:
         return self.__camera.capture_image()
     
     def capture_file(self, image_name):
+        self.stop()
+        self.__camera.preview_configuration.main.size = (4000, 3000)
+        self.__camera.configure("preview")
+        self.start()
         self.__camera.capture_file(image_name)
+        self.stop()
+        self.__camera.preview_configuration.main.size = self.__res
+        self.__camera.configure("preview")
+        self.start()
