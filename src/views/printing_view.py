@@ -14,7 +14,7 @@ class PrintingView(StateView):
         StateView.__init__(self, state_controller, window_context, "printing", "diaporama")
         self.__printer : TestPrinter = None
         self.__timer : int = 0
-        self.__photo_name : str = ""
+        self.__photo = ""
         self.__i = 0
         self.__printer_in_trouble = False
        
@@ -27,7 +27,7 @@ class PrintingView(StateView):
             self._logger.warning("The printer seems to be not connected, Check if it's turned on and that it's connected correctly")
             self._logger.warning(f"Error : {e}")
             self.__printer_in_trouble = True
-        self.__photo_name = self._get_artifact("photo_name")
+        self.__photo = self._get_artifact("photo")
         self.__timer = time.time()
         self.__printing_text = TextMessage(self._window, "Printing ... ",
                                             center_x=CenterMode.CENTER, font_size=400,
@@ -55,7 +55,7 @@ class PrintingView(StateView):
 
     def __print(self):
         try:
-            self.__printer.print(self.__photo_name)
+            self.__printer.print(self.__photo[1])
         except Exception as e:
             self._logger.warning("Error when printing : This photo could not be printed !")
             self._logger.warning(f"{e}")        

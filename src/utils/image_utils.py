@@ -97,6 +97,7 @@ class ImageUtils():
         for f in folders:
             photos.extend(FileUtils.get_all_photos_in_folder(f))
         return photos
+        
     @staticmethod
     def get_all_images():
         all_folders = FileUtils.get_all_photos_folder()
@@ -106,9 +107,12 @@ class ImageUtils():
         return photos
 
     @staticmethod  
-    def image_transform(image_path, contrast : float = None, brightness : float = None, scale = None,
+    def image_transform(image, contrast : float = None, brightness : float = None, scale = None,
                         user_text : str = None) -> Image:
-        im = Image.open(image_path)
+        if type(image) == str:
+            im = Image.open(image)
+        else:
+            im = image
         #rescale
         if scale is not None:
             im = im.resize(scale)

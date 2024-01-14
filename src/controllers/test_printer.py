@@ -17,17 +17,18 @@ class TestPrinter():
         self.__be = BACKEND_CLASS("file:///dev/usb/lp0")
         self.__logger = logging.getLogger("fiebooth")
         
-    def print(self, image_path: str):
-        self.__print(image_path)
+    def print(self, image):
+        image = Image.fromarray(image)
+        self.__print(image)
         pass
 
-    def __print(self, image_path: str):
+    def __print(self, image: Image):
         try:
             #tmp_img = ImageUtils.create_temp_resized_image(image_path)
             brightness = 1 + (config.brightness+config.brightness_default)/6
             contrast = 1 + (config.contrast+config.contrast_default)/6
             scale = (config.width_printer, config.height_printer)
-            im = ImageUtils.image_transform(image_path, contrast, brightness, scale, config["user_text"])
+            im = ImageUtils.image_transform(image, contrast, brightness, scale, config["user_text"])
             #im = Image.open(tmp_img)
             create_label(self.__qlr, im, "62", red=False, threshold=10, cut=True, rotate=90, dither=True)
             self.__be.write(self.__qlr.data)

@@ -14,7 +14,7 @@ import time
 class AskPrintView(StateView):
     def __init__(self, state_controller, window_context, button : ButtonsController):
         StateView.__init__(self, state_controller, window_context, "ask_print", "printing")
-        self.__photo_name : str = None
+        self.__photo = None
         self.__buttons_controller : ButtonsController = button
         self.__preview : PhotoPreview = None 
         self.__print_text : TextMessage = None
@@ -29,7 +29,7 @@ class AskPrintView(StateView):
     def __yes_print(self, e):
         self._logger.info(f"YES Print photo ...")
         self.set_next_state_id("printing")
-        self._add_artifact("photo_name", self.__photo_name)
+        self._add_artifact("photo", self.__photo)
         self._go_next_state()
 
     def __no_print(self, e):
@@ -43,9 +43,9 @@ class AskPrintView(StateView):
     def show(self):
         self.__timer = time.time()
         self.__init_buttons()
-        self.__photo_name = self._get_artifact("photo")
-        if self.__photo_name != None:
-            self.__preview = PhotoPreview(self._window, self.__photo_name)
+        self.__photo = self._get_artifact("photo")
+        if self.__photo != None:
+            self.__preview = PhotoPreview(self._window, self.__photo[1])
             self.__print_text = TextMessage(self._window, "Imprimer la photo ?",
                                             center_x=CenterMode.CENTER, font_size=100,
                                             center_y=CenterMode.BOTTOM, y = 100)
@@ -69,18 +69,19 @@ class AskPrintView(StateView):
 
     def setup(self):
         self._window.fill((255, 255, 255))
-        self.__logo.setup()
-
-        self.__draw_yes_no_indicators()
-        self.__buttons_controller.setup()
-        if self.__photo_name != None:
+        
+        if not self.__photo is None:
             self.__preview.setup()
             self.__print_text.setup()
         else:
             self._logger.warning(f"No photo captured")
         if time.time() - self.__timer > 8:
             self.__no_print(None)
-    
+        self.__logo.setup()
+
+        self.__draw_yes_no_indicators()
+        self.__buttons_controller.setup()
+        
     def destroy(self) -> None:
         super().destroy()
         self.__buttons_controller.clear_triggers()

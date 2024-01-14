@@ -45,7 +45,7 @@ class TransformController():
                                         y=WinUtils.hprct(0.05), center_gravity_y=True, center_y=CenterMode.BOTTOM,
                                         font_size=WinUtils.hprct(0.15))
         
-        self.__tf_path = preview_path
+        self.__tf_path = ImageUtils.get_image_thumbnail_by_id(ImageUtils.get_image_id_from_path(preview_path))
         self.__update_transform()
         
         self.__show_contr = False
